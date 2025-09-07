@@ -442,38 +442,54 @@ const EscapeRoomDesktop = () => {
     if (!showStartMenu) return null;
 
     const apps = [
-      { id: 'files', name: 'File Explorer', icon: <Folder size={20} />, description: 'Browse documents' },
-      { id: 'mail', name: 'Mail', icon: <Mail size={20} />, description: 'Check messages' },
-      { id: 'browser', name: 'Edge Browser', icon: <Globe size={20} />, description: 'Browse the web' }
+      { id: 'files', name: 'File Explorer', icon: <Folder size={24} className="text-orange-500" />, description: 'Browse your files', color: 'from-orange-400 to-orange-500' },
+      { id: 'mail', name: 'Mail', icon: <Mail size={24} className="text-blue-600" />, description: 'Check your messages', color: 'from-blue-500 to-blue-600' },
+      { id: 'browser', name: 'Microsoft Edge', icon: <Globe size={24} className="text-cyan-500" />, description: 'Browse the web', color: 'from-cyan-400 to-cyan-500' }
     ];
 
     return (
-      <div className="fixed bottom-12 left-2 w-80 bg-gray-900 bg-opacity-95 backdrop-blur-md text-white rounded-t-lg border border-gray-700 z-50">
-        <div className="p-4">
-          <div className="flex items-center space-x-3 mb-4">
-            <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center">
-              <User size={20} />
+      <div className="fixed bottom-16 left-1/2 transform -translate-x-1/2 w-96 bg-black bg-opacity-80 backdrop-blur-xl text-white rounded-xl border border-white border-opacity-20 shadow-2xl z-50 overflow-hidden">
+        {/* User Profile Section */}
+        <div className="p-6 border-b border-white border-opacity-10">
+          <div className="flex items-center space-x-4">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
+              <User size={24} className="text-white" />
             </div>
             <div>
-              <div className="font-medium">Agent Smith</div>
-              <div className="text-xs text-gray-400">agent.smith@company.com</div>
+              <div className="font-medium text-lg">Agent Smith</div>
+              <div className="text-sm text-white text-opacity-70">agent.smith@company.com</div>
             </div>
           </div>
+        </div>
 
-          <div className="space-y-1">
+        {/* Recommended Apps */}
+        <div className="p-6">
+          <h3 className="text-sm font-medium text-white text-opacity-80 mb-4 uppercase tracking-wider">Recommended</h3>
+          <div className="space-y-2">
             {apps.map(app => (
               <button
                 key={app.id}
                 onClick={() => openApp(app.id)}
-                className="w-full flex items-center space-x-3 p-2 hover:bg-gray-700 rounded text-left"
+                className="w-full flex items-center space-x-4 p-3 hover:bg-white hover:bg-opacity-10 rounded-lg text-left transition-all duration-200 group"
               >
-                <div className="text-blue-400">{app.icon}</div>
-                <div>
+                <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${app.color} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}>
+                  {app.icon}
+                </div>
+                <div className="flex-1">
                   <div className="text-sm font-medium">{app.name}</div>
-                  <div className="text-xs text-gray-400">{app.description}</div>
+                  <div className="text-xs text-white text-opacity-60">{app.description}</div>
                 </div>
               </button>
             ))}
+          </div>
+        </div>
+
+        {/* Power Options */}
+        <div className="border-t border-white border-opacity-10 p-4">
+          <div className="flex justify-end">
+            <button className="w-10 h-10 rounded-lg bg-white bg-opacity-10 hover:bg-opacity-20 flex items-center justify-center transition-colors">
+              <div className="w-5 h-5 rounded-full border-2 border-white border-opacity-60"></div>
+            </button>
           </div>
         </div>
       </div>

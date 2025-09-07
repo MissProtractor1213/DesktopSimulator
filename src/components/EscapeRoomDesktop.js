@@ -148,7 +148,7 @@ const EscapeRoomDesktop = () => {
         icon: 'excel',
         size: '48.3 KB',
         modified: 'Yesterday 4:30 PM',
-        fileUrl: '/documents/budget-report.xlsx', // ← Real file link
+        fileUrl: 'public/documents/budget-report.xlsx',
         //content: 'QUARTERLY BUDGET REPORT\n======================\n\nQ1 Expenses: $2,847,392\nQ2 Projected: $3,120,048\n\nDepartment Allocations:\n- IT Security: $450,000\n- Operations: $890,000\n- Research: $1,200,000\n- Classified Projects: $[REDACTED]'
       },
       { 
@@ -158,7 +158,7 @@ const EscapeRoomDesktop = () => {
         icon: 'pdf',
         size: '156.7 KB',
         modified: 'Today 1:45 PM',
-        fileUrl: '/documents/Super Secret Wafer Recipe.pdf', // ← Real PDF (disguised name)
+        fileUrl: 'public/documents/Super Secret Wafer Recipe.pdf',
         //content: '⚠️ CLASSIFIED DOCUMENT ⚠️\n\nOPERATION NIGHTFALL - PERSONNEL DOSSIER\n=====================================\n\nAGENT ASSIGNMENTS:\n• Agent Smith - Lead Infiltrator\n• Agent Johnson - Systems Specialist  \n• Agent Davis - Extraction Coordinator\n\nTARGET FACILITY: Meridian Complex, Level B-7\nEXTRACTION POINT: Service tunnel, Grid Reference: X-47-Alpha\n\nSECURITY PROTOCOLS:\n- Biometric scanners offline: 23:15-23:45\n- Guard rotation change: 23:30\n- Emergency lockdown override: Code PHOENIX-7791\n\n❗ This document was disguised as "Team photo.pdf" to avoid detection ❗'
       },
       { 
@@ -168,8 +168,16 @@ const EscapeRoomDesktop = () => {
         icon: 'image',
         size: '2.4 MB',
         modified: 'Yesterday 3:20 PM',
-        fileUrl: '/documents/team-photo.jpg', // ← Real image
-        isImage: true
+        fileUrl: '/documents/team-photo.jpg'
+      },
+      { 
+        name: 'Company_Policy.pdf',
+        type: 'pdf',
+        suspicious: false,
+        icon: 'pdf',
+        size: '890 KB',
+        modified: '2 days ago',
+        fileUrl: '/documents/company-policy.pdf'
       },
       { 
         name: 'SECRET_PLANS.txt', 
@@ -207,8 +215,148 @@ const EscapeRoomDesktop = () => {
       }
     };
 
-    const openRealFile = (fileUrl) => {
-      window.open(fileUrl, '_blank');
+    const renderFileContent = (file) => {
+      // If file has text content, show that first (for escape room clues)
+      if (file.content) {
+        return (
+          <div className="space-y-4">
+            <div className="bg-gray-50 p-4 rounded-lg border">
+              <pre className="text-sm whitespace-pre-wrap text-gray-800 font-mono leading-relaxed">
+                {file.content}
+              </pre>
+            </div>
+            
+            {file.suspicious && (
+              <div className="p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg">
+                <div className="flex items-center space-x-2">
+                  <div className="text-red-600">🚨</div>
+                  <div>
+                    <div className="font-semibold text-red-800">Suspicious Content Detected!</div>
+                    <div className="text-red-700 text-sm mt-1">
+                      {file.name === 'Team photo.pdf' 
+                        ? 'This file was disguised with an innocent name but contains classified information!' 
+                        : 'This document contains potentially unauthorized or classified information.'
+                      }
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      }
+
+      // If no content but has fileUrl, render based on file type
+      if (file.fileUrl) {
+        switch (file.type) {
+          case 'image':
+            return (
+              <div className="text-center">
+                <img 
+                  src={file.fileUrl} 
+                  alt={file.name}
+                  className="max-w-full max-h-96 rounded shadow-lg mx-auto object-contain"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'block';
+                  }}
+                />
+                <div style={{display: 'none'}} className="text-center py-8 text-gray-500">
+                  <div className="text-4xl mb-2">🖼️</div>
+                  <div>Image not found</div>
+                  <div className="text-sm mt-2">Make sure the file exists at: {file.fileUrl}</div>
+                </div>
+              </div>
+            );
+
+          case 'pdf':
+            return (
+              <div className="w-full">
+                <iframe
+                  src={file.fileUrl}
+                  className="w-full h-96 border rounded"
+                  title={file.name}
+                  onError={() => {
+                    console.log('PDF failed to load');
+                  }}
+                >
+                  <div className="text-center py-8 text-gray-500">
+                    <div className="text-4xl mb-2">📄</div>
+                    <div>PDF preview not available</div>
+                    <div className="text-sm mt-2">
+                      <a 
+                        href={file.fileUrl} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:underline"
+                      >
+                        Click here to open PDF in new tab
+                      </a>
+                    </div>
+                  </div>
+                </iframe>
+              </div>
+            );
+
+          case 'excel':
+            return (
+              <div className="text-center py-8">
+                <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+                  <div className="text-4xl mb-4">📊</div>
+                  <div className="text-lg font-medium text-gray-900 mb-2">Excel Spreadsheet</div>
+                  <div className="text-sm text-gray-600 mb-4">
+                    Excel files cannot be displayed directly in the browser.
+                  </div>
+                  
+                  {/* Option 1: Download link */}
+                  <a 
+                    href={file.fileUrl}
+                    download={file.name}
+                    className="inline-block px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 mr-2"
+                  >
+                    📥 Download Excel File
+                  </a>
+                  
+                  {/* Option 2: Try to open in new tab */}
+                  <a 
+                    href={file.fileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                  >
+                    🔗 Open in New Tab
+                  </a>
+                </div>
+              </div>
+            );
+
+          default:
+            return (
+              <div className="text-center py-8 text-gray-500">
+                <div className="text-4xl mb-2">📄</div>
+                <div>File preview not available</div>
+                <div className="text-sm mt-2">
+                  <a 
+                    href={file.fileUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline"
+                  >
+                    Open file in new tab
+                  </a>
+                </div>
+              </div>
+            );
+        }
+      }
+
+      // Fallback for files without content or URL
+      return (
+        <div className="text-center py-8 text-gray-500">
+          <div className="text-4xl mb-2">📄</div>
+          <div>No preview available for this file</div>
+        </div>
+      );
     };
 
     return (
@@ -307,7 +455,7 @@ const EscapeRoomDesktop = () => {
         {/* File Viewer Modal */}
         {selectedFile && (
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg max-w-4xl w-full max-h-[80vh] overflow-hidden shadow-2xl">
+            <div className="bg-white rounded-lg max-w-5xl w-full max-h-[85vh] overflow-hidden shadow-2xl">
               {/* Modal Header */}
               <div className="bg-gray-50 p-4 border-b flex items-center justify-between">
                 <div className="flex items-center space-x-3">
@@ -321,12 +469,14 @@ const EscapeRoomDesktop = () => {
                 </div>
                 <div className="flex items-center space-x-2">
                   {selectedFile.fileUrl && (
-                    <button 
-                      onClick={() => openRealFile(selectedFile.fileUrl)}
+                    <a 
+                      href={selectedFile.fileUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700"
                     >
-                      Open File
-                    </button>
+                      Open in New Tab
+                    </a>
                   )}
                   <button 
                     onClick={() => setSelectedFile(null)}
@@ -338,62 +488,8 @@ const EscapeRoomDesktop = () => {
               </div>
               
               {/* Modal Content */}
-              <div className="p-6 overflow-auto max-h-96">
-                {selectedFile.content && !selectedFile.isImage ? (
-                  <div className="space-y-4">
-                    <div className="bg-gray-50 p-4 rounded-lg border">
-                      <pre className="text-sm whitespace-pre-wrap text-gray-800 font-mono leading-relaxed">
-                        {selectedFile.content}
-                      </pre>
-                    </div>
-                    
-                    {selectedFile.suspicious && (
-                      <div className="p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg">
-                        <div className="flex items-center space-x-2">
-                          <div className="text-red-600">🚨</div>
-                          <div>
-                            <div className="font-semibold text-red-800">Suspicious Content Detected!</div>
-                            <div className="text-red-700 text-sm mt-1">
-                              {selectedFile.name === 'Team photo.pdf' 
-                                ? 'This file was disguised with an innocent name but contains classified information!' 
-                                : 'This document contains potentially unauthorized or classified information.'
-                              }
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ) : selectedFile.isImage && selectedFile.fileUrl ? (
-                  <div className="text-center">
-                    <img 
-                      src={selectedFile.fileUrl} 
-                      alt={selectedFile.name}
-                      className="max-w-full max-h-80 rounded shadow-lg mx-auto"
-                      onError={(e) => {
-                        e.target.style.display = 'none';
-                        e.target.nextSibling.style.display = 'block';
-                      }}
-                    />
-                    <div style={{display: 'none'}} className="text-center py-8 text-gray-500">
-                      <div className="text-4xl mb-2">🖼️</div>
-                      <div>Image not found. Make sure the file exists in /public/documents/</div>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="text-center py-8 text-gray-500">
-                    <div className="text-4xl mb-2">📄</div>
-                    <div>Click "Open File" to view this document</div>
-                    {selectedFile.fileUrl && (
-                      <button 
-                        onClick={() => openRealFile(selectedFile.fileUrl)}
-                        className="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                      >
-                        Open {selectedFile.type.toUpperCase()} File
-                      </button>
-                    )}
-                  </div>
-                )}
+              <div className="p-6 overflow-auto max-h-[calc(85vh-120px)]">
+                {renderFileContent(selectedFile)}
               </div>
             </div>
           </div>

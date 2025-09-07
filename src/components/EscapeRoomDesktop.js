@@ -149,7 +149,7 @@ const EscapeRoomDesktop = () => {
         size: '48.3 KB',
         modified: 'Yesterday 4:30 PM',
         fileUrl: '/documents/budget-report.xlsx', // ← Real file link
-        content: 'QUARTERLY BUDGET REPORT\n======================\n\nQ1 Expenses: $2,847,392\nQ2 Projected: $3,120,048\n\nDepartment Allocations:\n- IT Security: $450,000\n- Operations: $890,000\n- Research: $1,200,000\n- Classified Projects: $[REDACTED]'
+        //content: 'QUARTERLY BUDGET REPORT\n======================\n\nQ1 Expenses: $2,847,392\nQ2 Projected: $3,120,048\n\nDepartment Allocations:\n- IT Security: $450,000\n- Operations: $890,000\n- Research: $1,200,000\n- Classified Projects: $[REDACTED]'
       },
       { 
         name: 'Team photo.pdf', 
@@ -158,8 +158,8 @@ const EscapeRoomDesktop = () => {
         icon: 'pdf',
         size: '156.7 KB',
         modified: 'Today 1:45 PM',
-        fileUrl: '/documents/classified-plans.pdf', // ← Real PDF (disguised name)
-        content: '⚠️ CLASSIFIED DOCUMENT ⚠️\n\nOPERATION NIGHTFALL - PERSONNEL DOSSIER\n=====================================\n\nAGENT ASSIGNMENTS:\n• Agent Smith - Lead Infiltrator\n• Agent Johnson - Systems Specialist  \n• Agent Davis - Extraction Coordinator\n\nTARGET FACILITY: Meridian Complex, Level B-7\nEXTRACTION POINT: Service tunnel, Grid Reference: X-47-Alpha\n\nSECURITY PROTOCOLS:\n- Biometric scanners offline: 23:15-23:45\n- Guard rotation change: 23:30\n- Emergency lockdown override: Code PHOENIX-7791\n\n❗ This document was disguised as "Team photo.pdf" to avoid detection ❗'
+        fileUrl: '/documents/Super Secret Wafer Recipe.pdf', // ← Real PDF (disguised name)
+        //content: '⚠️ CLASSIFIED DOCUMENT ⚠️\n\nOPERATION NIGHTFALL - PERSONNEL DOSSIER\n=====================================\n\nAGENT ASSIGNMENTS:\n• Agent Smith - Lead Infiltrator\n• Agent Johnson - Systems Specialist  \n• Agent Davis - Extraction Coordinator\n\nTARGET FACILITY: Meridian Complex, Level B-7\nEXTRACTION POINT: Service tunnel, Grid Reference: X-47-Alpha\n\nSECURITY PROTOCOLS:\n- Biometric scanners offline: 23:15-23:45\n- Guard rotation change: 23:30\n- Emergency lockdown override: Code PHOENIX-7791\n\n❗ This document was disguised as "Team photo.pdf" to avoid detection ❗'
       },
       { 
         name: 'Team_Meeting.jpg', 

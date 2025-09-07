@@ -148,7 +148,7 @@ const EscapeRoomDesktop = () => {
         icon: 'excel',
         size: '48.3 KB',
         modified: 'Yesterday 4:30 PM',
-        fileUrl: 'public/documents/budget-report.xlsx'
+        fileUrl: 'public/documents/BUDGET-REPORT.PNG'
       },
       { 
         name: 'Team photo.pdf', 
@@ -157,8 +157,8 @@ const EscapeRoomDesktop = () => {
         icon: 'pdf',
         size: '156.7 KB',
         modified: 'Today 1:45 PM',
-        fileUrl: 'public/documents/Super Secret Wafer Recipe.pdf',
-        content: '⚠️ CLASSIFIED DOCUMENT ⚠️\n\nOPERATION NIGHTFALL - PERSONNEL DOSSIER\n=====================================\n\nAGENT ASSIGNMENTS:\n• Agent Smith - Lead Infiltrator\n• Agent Johnson - Systems Specialist  \n• Agent Davis - Extraction Coordinator\n\nTARGET FACILITY: Meridian Complex, Level B-7\nEXTRACTION POINT: Service tunnel, Grid Reference: X-47-Alpha\n\nSECURITY PROTOCOLS:\n- Biometric scanners offline: 23:15-23:45\n- Guard rotation change: 23:30\n- Emergency lockdown override: Code PHOENIX-7791\n\n❗ This document was disguised as "Team photo.pdf" to avoid detection ❗'
+        fileUrl: 'public/documents/TEAM-PHOTO.png',
+        //content: '⚠️ CLASSIFIED DOCUMENT ⚠️\n\nOPERATION NIGHTFALL - PERSONNEL DOSSIER\n=====================================\n\nAGENT ASSIGNMENTS:\n• Agent Smith - Lead Infiltrator\n• Agent Johnson - Systems Specialist  \n• Agent Davis - Extraction Coordinator\n\nTARGET FACILITY: Meridian Complex, Level B-7\nEXTRACTION POINT: Service tunnel, Grid Reference: X-47-Alpha\n\nSECURITY PROTOCOLS:\n- Biometric scanners offline: 23:15-23:45\n- Guard rotation change: 23:30\n- Emergency lockdown override: Code PHOENIX-7791\n\n❗ This document was disguised as "Team photo.pdf" to avoid detection ❗'
       },
       { 
         name: 'Team_Meeting.jpg', 

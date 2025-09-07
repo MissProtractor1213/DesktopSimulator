@@ -148,8 +148,7 @@ const EscapeRoomDesktop = () => {
         icon: 'excel',
         size: '48.3 KB',
         modified: 'Yesterday 4:30 PM',
-        fileUrl: 'public/documents/budget-report.xlsx',
-        //content: 'QUARTERLY BUDGET REPORT\n======================\n\nQ1 Expenses: $2,847,392\nQ2 Projected: $3,120,048\n\nDepartment Allocations:\n- IT Security: $450,000\n- Operations: $890,000\n- Research: $1,200,000\n- Classified Projects: $[REDACTED]'
+        fileUrl: 'public/documents/budget-report.xlsx'
       },
       { 
         name: 'Team photo.pdf', 
@@ -159,7 +158,7 @@ const EscapeRoomDesktop = () => {
         size: '156.7 KB',
         modified: 'Today 1:45 PM',
         fileUrl: 'public/documents/Super Secret Wafer Recipe.pdf',
-        //content: '⚠️ CLASSIFIED DOCUMENT ⚠️\n\nOPERATION NIGHTFALL - PERSONNEL DOSSIER\n=====================================\n\nAGENT ASSIGNMENTS:\n• Agent Smith - Lead Infiltrator\n• Agent Johnson - Systems Specialist  \n• Agent Davis - Extraction Coordinator\n\nTARGET FACILITY: Meridian Complex, Level B-7\nEXTRACTION POINT: Service tunnel, Grid Reference: X-47-Alpha\n\nSECURITY PROTOCOLS:\n- Biometric scanners offline: 23:15-23:45\n- Guard rotation change: 23:30\n- Emergency lockdown override: Code PHOENIX-7791\n\n❗ This document was disguised as "Team photo.pdf" to avoid detection ❗'
+        content: '⚠️ CLASSIFIED DOCUMENT ⚠️\n\nOPERATION NIGHTFALL - PERSONNEL DOSSIER\n=====================================\n\nAGENT ASSIGNMENTS:\n• Agent Smith - Lead Infiltrator\n• Agent Johnson - Systems Specialist  \n• Agent Davis - Extraction Coordinator\n\nTARGET FACILITY: Meridian Complex, Level B-7\nEXTRACTION POINT: Service tunnel, Grid Reference: X-47-Alpha\n\nSECURITY PROTOCOLS:\n- Biometric scanners offline: 23:15-23:45\n- Guard rotation change: 23:30\n- Emergency lockdown override: Code PHOENIX-7791\n\n❗ This document was disguised as "Team photo.pdf" to avoid detection ❗'
       },
       { 
         name: 'Team_Meeting.jpg', 
@@ -197,17 +196,17 @@ const EscapeRoomDesktop = () => {
       }
     };
 
+    // Updated getFileIcon function - removed red highlighting for suspicious files
     const getFileIcon = (type, suspicious = false) => {
       const iconClass = "w-8 h-8 mb-2";
-      const suspiciousClass = suspicious ? "text-red-600" : "";
       
       switch(type) {
         case 'text':
-          return <div className={`${iconClass} ${suspiciousClass} bg-blue-100 rounded border flex items-center justify-center text-blue-600 text-xs font-bold`}>TXT</div>;
+          return <div className={`${iconClass} bg-blue-100 rounded border flex items-center justify-center text-blue-600 text-xs font-bold`}>TXT</div>;
         case 'excel':
           return <div className={`${iconClass} bg-green-100 rounded border flex items-center justify-center text-green-600 text-xs font-bold`}>XLS</div>;
         case 'pdf':
-          return <div className={`${iconClass} ${suspiciousClass || 'bg-red-100 text-red-600'} rounded border flex items-center justify-center text-xs font-bold`}>PDF</div>;
+          return <div className={`${iconClass} bg-red-100 text-red-600 rounded border flex items-center justify-center text-xs font-bold`}>PDF</div>;
         case 'image':
           return <div className={`${iconClass} bg-purple-100 rounded border flex items-center justify-center text-purple-600 text-xs font-bold`}>JPG</div>;
         default:
@@ -216,7 +215,6 @@ const EscapeRoomDesktop = () => {
     };
 
     const renderFileContent = (file) => {
-      // If file has text content, show that first (for escape room clues)
       if (file.content) {
         return (
           <div className="space-y-4">
@@ -227,16 +225,15 @@ const EscapeRoomDesktop = () => {
             </div>
             
             {file.suspicious && (
-              <div className="p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg">
+              <div className="p-4 bg-yellow-50 border-l-4 border-yellow-500 rounded-r-lg">
                 <div className="flex items-center space-x-2">
-                  <div className="text-red-600">🚨</div>
+                  <div className="text-yellow-600">🚨</div>
                   <div>
-                    <div className="font-semibold text-red-800">Suspicious Content Detected!</div>
-                    <div className="text-red-700 text-sm mt-1">
+                    <div className="font-semibold text-yellow-800">Suspicious Content Detected!</div>
+                    <div className="text-yellow-700 text-sm mt-1">
                       {file.name === 'Team photo.pdf' 
                         ? 'This file was disguised with an innocent name but contains classified information!' 
-                        : 'This document contains potentially unauthorized or classified information.'
-                      }
+                        : 'This document contains potentially unauthorized or classified information.'}
                     </div>
                   </div>
                 </div>
@@ -246,179 +243,78 @@ const EscapeRoomDesktop = () => {
         );
       }
 
-      // If no content but has fileUrl, render based on file type
       if (file.fileUrl) {
-        switch (file.type) {
-          case 'image':
-            return (
-              <div className="text-center">
-                <img 
-                  src={file.fileUrl} 
-                  alt={file.name}
-                  className="max-w-full max-h-96 rounded shadow-lg mx-auto object-contain"
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                    e.target.nextSibling.style.display = 'block';
-                  }}
-                />
-                <div style={{display: 'none'}} className="text-center py-8 text-gray-500">
-                  <div className="text-4xl mb-2">🖼️</div>
-                  <div>Image not found</div>
-                  <div className="text-sm mt-2">Make sure the file exists at: {file.fileUrl}</div>
-                </div>
-              </div>
-            );
-
-          case 'pdf':
-            return (
-              <div className="w-full">
-                <iframe
-                  src={file.fileUrl}
-                  className="w-full h-96 border rounded"
-                  title={file.name}
-                  onError={() => {
-                    console.log('PDF failed to load');
-                  }}
-                >
-                  <div className="text-center py-8 text-gray-500">
-                    <div className="text-4xl mb-2">📄</div>
-                    <div>PDF preview not available</div>
-                    <div className="text-sm mt-2">
-                      <a 
-                        href={file.fileUrl} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline"
-                      >
-                        Click here to open PDF in new tab
-                      </a>
-                    </div>
-                  </div>
-                </iframe>
-              </div>
-            );
-
-          case 'excel':
-            return (
-              <div className="text-center py-8">
-                <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-                  <div className="text-4xl mb-4">📊</div>
-                  <div className="text-lg font-medium text-gray-900 mb-2">Excel Spreadsheet</div>
-                  <div className="text-sm text-gray-600 mb-4">
-                    Excel files cannot be displayed directly in the browser.
-                  </div>
-                  
-                  {/* Option 1: Download link */}
-                  <a 
-                    href={file.fileUrl}
-                    download={file.name}
-                    className="inline-block px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 mr-2"
-                  >
-                    📥 Download Excel File
-                  </a>
-                  
-                  {/* Option 2: Try to open in new tab */}
-                  <a 
-                    href={file.fileUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                  >
-                    🔗 Open in New Tab
-                  </a>
-                </div>
-              </div>
-            );
-
-          default:
-            return (
-              <div className="text-center py-8 text-gray-500">
-                <div className="text-4xl mb-2">📄</div>
-                <div>File preview not available</div>
-                <div className="text-sm mt-2">
-                  <a 
-                    href={file.fileUrl} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline"
-                  >
-                    Open file in new tab
-                  </a>
-                </div>
-              </div>
-            );
-        }
+        return (
+          <div className="text-center">
+            <p className="text-gray-600 mb-4">This file requires an external application to view.</p>
+            <a 
+              href={file.fileUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+              Open in External Application
+            </a>
+          </div>
+        );
       }
 
-      // Fallback for files without content or URL
       return (
-        <div className="text-center py-8 text-gray-500">
-          <div className="text-4xl mb-2">📄</div>
-          <div>No preview available for this file</div>
+        <div className="text-center text-gray-600">
+          <div className="mb-4">Preview not available for this file type.</div>
         </div>
       );
     };
 
     return (
-      <div className="h-full flex flex-col bg-white">
-        {/* File Explorer Header */}
-        <div className="bg-gray-50 border-b px-4 py-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <Folder size={20} className="text-blue-600" />
-              <span className="font-medium">Documents</span>
-              <span className="text-gray-400">•</span>
-              <span className="text-sm text-gray-600">{files.length} items</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <button 
-                onClick={() => setViewMode('grid')}
-                className={`p-1 rounded ${viewMode === 'grid' ? 'bg-blue-100 text-blue-600' : 'text-gray-500 hover:bg-gray-100'}`}
-              >
-                <div className="w-4 h-4 grid grid-cols-2 gap-0.5">
-                  <div className="bg-current rounded-sm"></div>
-                  <div className="bg-current rounded-sm"></div>
-                  <div className="bg-current rounded-sm"></div>
-                  <div className="bg-current rounded-sm"></div>
-                </div>
-              </button>
-              <button 
-                onClick={() => setViewMode('list')}
-                className={`p-1 rounded ${viewMode === 'list' ? 'bg-blue-100 text-blue-600' : 'text-gray-500 hover:bg-gray-100'}`}
-              >
-                <div className="w-4 h-4 flex flex-col gap-0.5">
-                  <div className="bg-current h-0.5 rounded"></div>
-                  <div className="bg-current h-0.5 rounded"></div>
-                  <div className="bg-current h-0.5 rounded"></div>
-                </div>
-              </button>
-            </div>
+      <div className="h-full flex flex-col bg-gray-50">
+        {/* Toolbar */}
+        <div className="bg-white border-b px-4 py-3 flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <h3 className="font-semibold text-gray-800">Documents</h3>
+            <span className="text-sm text-gray-500">{files.length} items</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <button 
+              onClick={() => setViewMode('grid')}
+              className={`p-1 rounded ${viewMode === 'grid' ? 'bg-blue-100 text-blue-600' : 'text-gray-500 hover:bg-gray-100'}`}
+            >
+              <div className="w-4 h-4 grid grid-cols-2 gap-0.5">
+                <div className="bg-current rounded-sm"></div>
+                <div className="bg-current rounded-sm"></div>
+                <div className="bg-current rounded-sm"></div>
+                <div className="bg-current rounded-sm"></div>
+              </div>
+            </button>
+            <button 
+              onClick={() => setViewMode('list')}
+              className={`p-1 rounded ${viewMode === 'list' ? 'bg-blue-100 text-blue-600' : 'text-gray-500 hover:bg-gray-100'}`}
+            >
+              <div className="w-4 h-4 flex flex-col gap-0.5">
+                <div className="bg-current h-0.5 rounded"></div>
+                <div className="bg-current h-0.5 rounded"></div>
+                <div className="bg-current h-0.5 rounded"></div>
+              </div>
+            </button>
           </div>
         </div>
         
-        {/* File Grid/List */}
+        {/* File Grid/List - UPDATED: Removed red highlighting and warning icons */}
         <div className="flex-1 p-4 bg-white overflow-auto">
           {viewMode === 'grid' ? (
             <div className="grid grid-cols-6 gap-4">
               {files.map((file, index) => (
                 <div
                   key={index}
-                  className={`cursor-pointer p-3 text-center hover:bg-blue-50 rounded-lg border-2 border-transparent hover:border-blue-200 transition-all ${
-                    file.suspicious ? 'ring-1 ring-red-200 bg-red-25' : ''
-                  }`}
+                  className="cursor-pointer p-3 text-center hover:bg-blue-50 rounded-lg border-2 border-transparent hover:border-blue-200 transition-all"
                   onClick={() => handleFileClick(file)}
                 >
                   <div className="flex justify-center">
                     {getFileIcon(file.type, file.suspicious)}
                   </div>
-                  <div className={`text-xs text-center break-words leading-tight ${
-                    file.suspicious ? 'text-red-700 font-medium' : 'text-gray-700'
-                  }`}>
+                  <div className="text-xs text-center break-words leading-tight text-gray-700">
                     {file.name}
                   </div>
-                  {file.suspicious && (
-                    <div className="text-xs text-red-500 mt-1">⚠️</div>
-                  )}
                 </div>
               ))}
             </div>
@@ -427,20 +323,15 @@ const EscapeRoomDesktop = () => {
               {files.map((file, index) => (
                 <div
                   key={index}
-                  className={`cursor-pointer p-3 flex items-center space-x-3 hover:bg-blue-50 rounded-lg ${
-                    file.suspicious ? 'bg-red-25 border border-red-100' : ''
-                  }`}
+                  className="cursor-pointer p-3 flex items-center space-x-3 hover:bg-blue-50 rounded-lg"
                   onClick={() => handleFileClick(file)}
                 >
                   <div className="flex-shrink-0">
                     {getFileIcon(file.type, file.suspicious)}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className={`text-sm font-medium truncate ${
-                      file.suspicious ? 'text-red-700' : 'text-gray-900'
-                    }`}>
+                    <div className="text-sm font-medium truncate text-gray-900">
                       {file.name}
-                      {file.suspicious && <span className="ml-2 text-red-500">⚠️</span>}
                     </div>
                     <div className="text-xs text-gray-500">
                       Modified {file.modified} • {file.size}
@@ -506,47 +397,15 @@ const EscapeRoomDesktop = () => {
         from: 'Director Hayes',
         subject: '🔴 URGENT: Vault Access Code - CONFIDENTIAL',
         time: '2:30 PM',
-        content: 'Agent Smith,\n\nThe vault access code for tonight\'s operation is: 7394\n\nDelete this message immediately after reading.\nRemember - no traces.\n\n- Director Hayes\n\nP.S. The secondary escape route is through the maintenance tunnels.',
+        content: 'Agent Smith,\n\nThe vault access code for tonight\'s operation is: 7394\n\nDelete this message immediately after reading.\nRemember - no traces.\n\n- Director Hayes\n\nP.S. The backup codes are stored in the secure folder if needed.',
         suspicious: true,
         unread: true
       },
       {
-        from: 'Security Admin',
-        subject: '⚠️ System Maintenance Tonight - IGNORE ALARMS',
-        time: '1:45 PM',
-        content: 'All Personnel,\n\nScheduled system maintenance will occur tonight from 23:00 to 01:00.\n\nDuring this time:\n- Security cameras will be offline\n- Motion sensors disabled\n- Access logs suspended\n\nAny alarms during this period should be IGNORED.\n\nDO NOT investigate unusual activity.\n\n- IT Security Team',
-        suspicious: true,
-        unread: true
-      },
-      {
-        from: 'Agent Johnson',
-        subject: 'Equipment Drop Confirmed',
-        time: '12:15 PM',
-        content: 'Smith,\n\nEquipment package has been placed in Locker 47-B as discussed.\n\nContents:\n- Portable drive (encrypted)\n- Bypass device\n- Emergency beacon\n\nRetrieve before 22:00. Locker combination: 8472\n\n-J',
-        suspicious: true,
-        unread: false
-      },
-      {
-        from: 'Anonymous Whistleblower',
-        subject: 'You\'re being watched - CAREFUL',
-        time: '2 days ago',
-        content: 'Smith,\n\nSomeone in the organization knows about your activities.\n\nDirector Hayes may not be the only one involved. Trust no one.\n\nThey\'ve been monitoring email traffic. Use secure channels only.\n\nMeeting point Alpha if compromised.\n\n-A friend',
-        suspicious: true,
-        unread: false
-      },
-      {
-        from: 'HR Department',
-        subject: 'Weekly Team Meeting Reminder',
-        time: '10:15 AM',
-        content: 'Dear Team,\n\nReminder about our weekly team meeting tomorrow at 9 AM in Conference Room B.\n\nAgenda:\n- Project status updates\n- Q3 planning\n- Team building activities\n\nPlease bring your laptops and quarterly reports.\n\nBest regards,\nHR Team',
-        suspicious: false,
-        unread: false
-      },
-      {
-        from: 'IT Help Desk',
-        subject: 'Password Expiration Notice',
-        time: '9:30 AM',
-        content: 'Hello Agent Smith,\n\nYour network password will expire in 7 days.\n\nTo update your password, please visit: https://portal.company.com/password-reset\n\nFor security reasons, please choose a strong password with:\n- At least 12 characters\n- Mix of letters, numbers, and symbols\n- No dictionary words\n\nIf you need assistance, contact IT at ext. 2847.\n\nBest,\nIT Support Team',
+        from: 'IT Support',
+        subject: 'Password Reset Confirmation',
+        time: 'Yesterday 2:45 PM',
+        content: 'Hello Agent Smith,\n\nYour password reset request has been processed.\nNew temporary password: TempPass2847.\n\nPlease log in and change this immediately.\n\nBest,\nIT Support Team',
         suspicious: false,
         unread: false
       },
@@ -578,7 +437,7 @@ const EscapeRoomDesktop = () => {
 
     return (
       <div className="h-full flex bg-white">
-        {/* Email List Sidebar */}
+        {/* Email List Sidebar - UPDATED: Removed red background highlighting */}
         <div className="w-80 bg-gray-50 border-r overflow-auto">
           <div className="p-4 border-b bg-white">
             <h3 className="font-semibold text-blue-600 mb-2 flex items-center">
@@ -593,10 +452,8 @@ const EscapeRoomDesktop = () => {
               <div
                 key={index}
                 className={`p-4 cursor-pointer hover:bg-gray-100 transition-colors ${
-                  email.suspicious ? 'border-l-4 border-l-red-500 bg-red-50' : ''
-                } ${email.unread ? 'bg-blue-50 font-medium' : ''} ${
-                  selectedEmail === email ? 'bg-blue-100' : ''
-                }`}
+                  email.unread ? 'bg-blue-50 font-medium' : ''
+                } ${selectedEmail === email ? 'bg-blue-100' : ''}`}
                 onClick={() => handleEmailClick(email)}
               >
                 <div className="flex items-start justify-between mb-1">
@@ -622,18 +479,13 @@ const EscapeRoomDesktop = () => {
                   {email.unread && (
                     <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                   )}
-                  {email.suspicious && (
-                    <div className="text-xs text-red-500 flex items-center">
-                      ⚠️ <span className="ml-1">Flagged</span>
-                    </div>
-                  )}
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Email Content Panel */}
+        {/* Email Content Panel - UPDATED: Ensured content readability */}
         <div className="flex-1">
           {selectedEmail ? (
             <div className="h-full flex flex-col">
@@ -813,50 +665,32 @@ const EscapeRoomDesktop = () => {
                   isActive 
                     ? 'bg-white bg-opacity-25 shadow-lg' 
                     : isOpen
-                    ? 'bg-white bg-opacity-15'
-                    : 'bg-white bg-opacity-10 hover:bg-opacity-20'
+                    ? 'bg-white bg-opacity-10 hover:bg-opacity-20'
+                    : 'hover:bg-white hover:bg-opacity-10'
                 }`}
                 title={app.name}
               >
                 {app.icon}
-                
-                {/* Active indicator */}
-                {isActive && (
-                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-white rounded-full"></div>
+                {isOpen && (
+                  <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-white rounded-full"></div>
                 )}
-                
-                {/* Open indicator */}
-                {isOpen && !isActive && (
-                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-0.5 bg-white bg-opacity-60 rounded-full"></div>
-                )}
-                
-                {/* Tooltip */}
-                <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                  {app.name}
-                </div>
               </button>
             );
           })}
         </div>
 
-        {/* Separator */}
-        <div className="w-px h-6 bg-white bg-opacity-20 mr-4"></div>
-
-        {/* Running Apps (if any additional ones) */}
-        <div className="flex space-x-1 flex-1 justify-center">
-          {/* This section could show additional running apps that aren't pinned */}
-        </div>
-
         {/* System Tray */}
-        <div className="flex items-center space-x-4 text-white text-sm">
-          <div className="flex items-center space-x-2 opacity-80">
-            <Wifi size={16} />
+        <div className="ml-auto flex items-center space-x-4 text-white text-opacity-80">
+          <div className="flex items-center space-x-2 text-sm">
             <Volume2 size={16} />
+            <Wifi size={16} />
             <Battery size={16} />
           </div>
-          <div className="text-xs font-medium">
+          <div className="text-sm">
             <div>{currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
-            <div className="text-xs opacity-60">{currentTime.toLocaleDateString([], { month: 'short', day: 'numeric' })}</div>
+            <div className="text-xs text-white text-opacity-60">
+              {currentTime.toLocaleDateString([], { month: 'short', day: 'numeric' })}
+            </div>
           </div>
         </div>
       </div>

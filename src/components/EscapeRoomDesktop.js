@@ -243,6 +243,14 @@ const EscapeRoomDesktop = () => {
         unread: false
       },
       {
+        from: 'Anonymous Whistleblower',
+        subject: 'You\'re being watched - CAREFUL',
+        time: '2 days ago',
+        content: 'Smith,\n\nSomeone in the organization knows about your activities.\n\nDirector Hayes may not be the only one involved. Trust no one.\n\nThey\'ve been monitoring email traffic. Use secure channels only.\n\nMeeting point Alpha if compromised.\n\n-A friend',
+        suspicious: true,
+        unread: false
+      },
+      {
         from: 'HR Department',
         subject: 'Weekly Team Meeting Reminder',
         time: '10:15 AM',
@@ -257,66 +265,11 @@ const EscapeRoomDesktop = () => {
         content: 'Hello Agent Smith,\n\nYour network password will expire in 7 days.\n\nTo update your password, please visit: https://portal.company.com/password-reset\n\nFor security reasons, please choose a strong password with:\n- At least 12 characters\n- Mix of letters, numbers, and symbols\n- No dictionary words\n\nIf you need assistance, contact IT at ext. 2847.\n\nBest,\nIT Support Team',
         suspicious: false,
         unread: false
-      },
-      {
-        from: 'Facility Management',
-        subject: 'Building Access Card Update',
-        time: 'Yesterday 4:20 PM',
-        content: 'All Staff,\n\nNew access cards will be distributed next week. Your current cards will remain active until Friday.\n\nNew features include:\n- Biometric backup authentication\n- Temporary access codes\n- Enhanced encryption\n\nPlease report any issues with card readers to Facility Management.\n\nThank you,\nFacility Team',
-        suspicious: false,
-        unread: false
-      },
-      {
-        from: 'Dr. Martinez',
-        subject: 'Research Lab Schedule Change',
-        time: 'Yesterday 2:10 PM',
-        content: 'Research Team,\n\nDue to equipment calibration, Lab C will be unavailable Thursday from 6 PM to midnight.\n\nPlease plan your experiments accordingly. Emergency access can be granted through Security if absolutely necessary.\n\nLab B remains fully operational.\n\nRegards,\nDr. Elena Martinez\nResearch Director',
-        suspicious: false,
-        unread: false
-      },
-      {
-        from: 'Finance Department',
-        subject: 'Expense Report Deadline',
-        time: 'Yesterday 11:00 AM',
-        content: 'Dear Employees,\n\nReminder: Monthly expense reports are due by end of business Friday.\n\nPlease submit through the online portal with all required receipts attached.\n\nLate submissions may delay reimbursement processing.\n\nQuestions? Contact finance@company.com\n\nFinance Team',
-        suspicious: false,
-        unread: false
-      },
-      {
-        from: 'Anonymous Whistleblower',
-        subject: 'You\'re being watched - CAREFUL',
-        time: '2 days ago',
-        content: 'Smith,\n\nSomeone in the organization knows about your activities.\n\nDirector Hayes may not be the only one involved. Trust no one.\n\nThey\'ve been monitoring email traffic. Use secure channels only.\n\nMeeting point Alpha if compromised.\n\n-A friend',
-        suspicious: true,
-        unread: false
-      },
-      {
-        from: 'Company Newsletter',
-        subject: 'Employee of the Month - Congratulations!',
-        time: '3 days ago',
-        content: 'Dear Team,\n\nCongratulations to Sarah Chen from Accounting for being selected as Employee of the Month!\n\nSarah\'s dedication to accuracy and her helpful attitude make her a valuable team member.\n\nJoin us for the recognition ceremony Friday at 3 PM in the main lobby.\n\nCongratulations Sarah!\n\nManagement Team',
-        suspicious: false,
-        unread: false
-      },
-      {
-        from: 'Security Training',
-        subject: 'Mandatory Cybersecurity Training',
-        time: '4 days ago',
-        content: 'All Employees,\n\nMandatory cybersecurity training must be completed by month end.\n\nAccess the training portal at: training.company.com\n\nTopics covered:\n- Phishing recognition\n- Password security\n- Data protection protocols\n- Incident reporting\n\nCompletion certificate required for HR records.\n\nSecurity Team',
-        suspicious: false,
-        unread: false
-      },
-      {
-        from: 'Courier Services',
-        subject: 'Package Delivery Confirmation',
-        time: '5 days ago',
-        content: 'Mr. Smith,\n\nYour package has been delivered to the reception desk.\n\nTracking #: CS-7439-XM\nDelivered: 2:15 PM\nSigned by: M. Thompson (Reception)\n\nPlease collect within 48 hours.\n\nThank you for using Courier Services.\n\nDelivery Team',
-        suspicious: false,
-        unread: false
       }
     ];
 
     const handleEmailClick = (email) => {
+      console.log('Email clicked:', email.from, email.suspicious); // Debug log
       setSelectedEmail(email);
       if (email.suspicious) {
         markClueFound('email');
@@ -325,6 +278,7 @@ const EscapeRoomDesktop = () => {
 
     return (
       <div className="h-full flex bg-white">
+        {/* Email List Sidebar */}
         <div className="w-80 bg-gray-50 border-r overflow-auto">
           <div className="p-4 border-b bg-white">
             <h3 className="font-semibold text-blue-600 mb-2 flex items-center">
@@ -339,8 +293,10 @@ const EscapeRoomDesktop = () => {
               <div
                 key={index}
                 className={`p-4 cursor-pointer hover:bg-gray-100 transition-colors ${
-                  email.suspicious ? 'border-l-4 border-l-red-500 bg-red-25' : ''
-                } ${email.unread ? 'bg-blue-25 font-medium' : ''}`}
+                  email.suspicious ? 'border-l-4 border-l-red-500 bg-red-50' : ''
+                } ${email.unread ? 'bg-blue-50 font-medium' : ''} ${
+                  selectedEmail === email ? 'bg-blue-100' : ''
+                }`}
                 onClick={() => handleEmailClick(email)}
               >
                 <div className="flex items-start justify-between mb-1">
@@ -377,6 +333,7 @@ const EscapeRoomDesktop = () => {
           </div>
         </div>
 
+        {/* Email Content Panel */}
         <div className="flex-1">
           {selectedEmail ? (
             <div className="h-full flex flex-col">

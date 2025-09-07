@@ -567,3 +567,7 @@ const EscapeRoomDesktop = () => {
         ></div>
       )}
     </div>
+  );
+};
+
+export default EscapeRoomDesktop;

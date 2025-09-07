@@ -129,7 +129,7 @@ const EscapeRoomDesktop = () => {
 
   const FileExplorer = () => {
     const [selectedFile, setSelectedFile] = useState(null);
-    const [viewMode, setViewMode] = useState('grid'); // grid or list
+    const [viewMode, setViewMode] = useState('grid');
 
     const files = [
       { 
@@ -148,6 +148,7 @@ const EscapeRoomDesktop = () => {
         icon: 'excel',
         size: '48.3 KB',
         modified: 'Yesterday 4:30 PM',
+        fileUrl: '/documents/budget-report.xlsx', // ← Real file link
         content: 'QUARTERLY BUDGET REPORT\n======================\n\nQ1 Expenses: $2,847,392\nQ2 Projected: $3,120,048\n\nDepartment Allocations:\n- IT Security: $450,000\n- Operations: $890,000\n- Research: $1,200,000\n- Classified Projects: $[REDACTED]'
       },
       { 
@@ -157,7 +158,18 @@ const EscapeRoomDesktop = () => {
         icon: 'pdf',
         size: '156.7 KB',
         modified: 'Today 1:45 PM',
+        fileUrl: '/documents/classified-plans.pdf', // ← Real PDF (disguised name)
         content: '⚠️ CLASSIFIED DOCUMENT ⚠️\n\nOPERATION NIGHTFALL - PERSONNEL DOSSIER\n=====================================\n\nAGENT ASSIGNMENTS:\n• Agent Smith - Lead Infiltrator\n• Agent Johnson - Systems Specialist  \n• Agent Davis - Extraction Coordinator\n\nTARGET FACILITY: Meridian Complex, Level B-7\nEXTRACTION POINT: Service tunnel, Grid Reference: X-47-Alpha\n\nSECURITY PROTOCOLS:\n- Biometric scanners offline: 23:15-23:45\n- Guard rotation change: 23:30\n- Emergency lockdown override: Code PHOENIX-7791\n\n❗ This document was disguised as "Team photo.pdf" to avoid detection ❗'
+      },
+      { 
+        name: 'Team_Meeting.jpg', 
+        type: 'image', 
+        suspicious: false, 
+        icon: 'image',
+        size: '2.4 MB',
+        modified: 'Yesterday 3:20 PM',
+        fileUrl: '/documents/team-photo.jpg', // ← Real image
+        isImage: true
       },
       { 
         name: 'SECRET_PLANS.txt', 
@@ -167,15 +179,6 @@ const EscapeRoomDesktop = () => {
         icon: 'text',
         size: '1.8 KB',
         modified: 'Today 11:20 AM'
-      },
-      { 
-        name: 'Research_Data.pdf', 
-        type: 'pdf', 
-        suspicious: false, 
-        icon: 'pdf',
-        size: '2.3 MB',
-        modified: '3 days ago',
-        content: 'RESEARCH FINDINGS - PROJECT AURORA\n==================================\n\nExecutive Summary:\nOur research into advanced encryption methods has yielded promising results. The new algorithm shows 40% improvement in processing speed while maintaining security standards.\n\nKey Findings:\n1. Implementation feasibility: High\n2. Resource requirements: Moderate\n3. Timeline: 6-8 months\n\nRecommendations:\nProceed with Phase 2 development immediately.'
       }
     ];
 
@@ -197,9 +200,15 @@ const EscapeRoomDesktop = () => {
           return <div className={`${iconClass} bg-green-100 rounded border flex items-center justify-center text-green-600 text-xs font-bold`}>XLS</div>;
         case 'pdf':
           return <div className={`${iconClass} ${suspiciousClass || 'bg-red-100 text-red-600'} rounded border flex items-center justify-center text-xs font-bold`}>PDF</div>;
+        case 'image':
+          return <div className={`${iconClass} bg-purple-100 rounded border flex items-center justify-center text-purple-600 text-xs font-bold`}>JPG</div>;
         default:
           return <div className={`${iconClass} bg-gray-100 rounded border flex items-center justify-center text-gray-600 text-xs font-bold`}>FILE</div>;
       }
+    };
+
+    const openRealFile = (fileUrl) => {
+      window.open(fileUrl, '_blank');
     };
 
     return (
@@ -310,17 +319,27 @@ const EscapeRoomDesktop = () => {
                     </p>
                   </div>
                 </div>
-                <button 
-                  onClick={() => setSelectedFile(null)}
-                  className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
-                >
-                  <X size={20} />
-                </button>
+                <div className="flex items-center space-x-2">
+                  {selectedFile.fileUrl && (
+                    <button 
+                      onClick={() => openRealFile(selectedFile.fileUrl)}
+                      className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700"
+                    >
+                      Open File
+                    </button>
+                  )}
+                  <button 
+                    onClick={() => setSelectedFile(null)}
+                    className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
               </div>
               
               {/* Modal Content */}
               <div className="p-6 overflow-auto max-h-96">
-                {selectedFile.content ? (
+                {selectedFile.content && !selectedFile.isImage ? (
                   <div className="space-y-4">
                     <div className="bg-gray-50 p-4 rounded-lg border">
                       <pre className="text-sm whitespace-pre-wrap text-gray-800 font-mono leading-relaxed">
@@ -345,10 +364,34 @@ const EscapeRoomDesktop = () => {
                       </div>
                     )}
                   </div>
+                ) : selectedFile.isImage && selectedFile.fileUrl ? (
+                  <div className="text-center">
+                    <img 
+                      src={selectedFile.fileUrl} 
+                      alt={selectedFile.name}
+                      className="max-w-full max-h-80 rounded shadow-lg mx-auto"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        e.target.nextSibling.style.display = 'block';
+                      }}
+                    />
+                    <div style={{display: 'none'}} className="text-center py-8 text-gray-500">
+                      <div className="text-4xl mb-2">🖼️</div>
+                      <div>Image not found. Make sure the file exists in /public/documents/</div>
+                    </div>
+                  </div>
                 ) : (
                   <div className="text-center py-8 text-gray-500">
                     <div className="text-4xl mb-2">📄</div>
-                    <div>No preview available for this file type</div>
+                    <div>Click "Open File" to view this document</div>
+                    {selectedFile.fileUrl && (
+                      <button 
+                        onClick={() => openRealFile(selectedFile.fileUrl)}
+                        className="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                      >
+                        Open {selectedFile.type.toUpperCase()} File
+                      </button>
+                    )}
                   </div>
                 )}
               </div>

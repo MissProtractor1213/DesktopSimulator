@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import {
   Folder,
   Mail,
@@ -84,7 +84,7 @@ function IFrameViewer({ src, title }) {
   );
 }
 
-/** ---------- File Explorer (with per-item icons) ---------- */
+/** ---------- File Explorer ---------- */
 function FileExplorer() {
   const [viewMode, setViewMode] = useState("grid");
   const [selected, setSelected] = useState(null);
@@ -174,7 +174,6 @@ function FileExplorer() {
 
   return (
     <div className="h-full flex min-h-0">
-      {/* Left rail */}
       <aside className="w-72 border-r border-white/50 bg-white/60 backdrop-blur-md p-3 overflow-auto">
         <div className="flex items-center justify-between">
           <h3 className="font-semibold text-gray-800">Documents</h3>
@@ -201,7 +200,6 @@ function FileExplorer() {
           </button>
         </div>
 
-        {/* Items */}
         <div className="mt-2 space-y-1">
           {files.map((f) => (
             <button
@@ -232,7 +230,6 @@ function FileExplorer() {
         </div>
       </aside>
 
-      {/* Preview pane */}
       <section className="flex-1 min-h-0 bg-white">
         {selected ? (
           <div className="w-full h-full">{renderPreview(selected)}</div>
@@ -300,7 +297,7 @@ function MailApp() {
   );
 }
 
-/** ---------- Browser (history snapshots + PDF) ---------- */
+/** ---------- Browser ---------- */
 function BrowserApp() {
   const pages = [
     {
@@ -348,50 +345,52 @@ function BrowserApp() {
 export default function EscapeRoomDesktop() {
   const { toggle: toggleFullscreen } = useFullscreen("#root");
 
-  // Hooks must be unconditional—declare all of them up front:
+  // ---- LOGIN / CLOCK STATE ----
   const [hasUnlocked, setHasUnlocked] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
-  const correctPassword = "letmein"; // change to your puzzle
+  const correctPassword = "letmein"; // change to your puzzle password
 
-  // Desktop window state (declare ONCE here)
+  // Live clock
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    const t = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(t);
+  }, []);
+  const timeStr = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  const dateStr = now.toLocaleDateString(undefined, {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  });
+
+  // ---- DESKTOP WINDOW STATE ----
   const [open, setOpen] = useState({ files: false, mail: false, browser: false });
   const [minimized, setMinimized] = useState({ files: false, mail: false, browser: false });
 
-  // --- LOGIN GATE (Windows-11 style) ---
+  // --- LOGIN SCREEN ---
   if (!hasUnlocked) {
-    // Lock/Welcome screen
-    if (!showPassword) {
-      return (
-        <div className={`min-h-screen ${WALLPAPER} relative`}>
-          <div className="absolute inset-0 backdrop-blur-[1px]" />
-          <div className="h-full w-full grid place-items-center select-none">
-            <div className="text-white text-center">
-              <div className="text-6xl font-light drop-shadow">14:00</div>
-              <div className="opacity-90 mt-1">Sunday • Welcome</div>
-              <button
-                onClick={() => setShowPassword(true)}
-                className="mt-6 px-4 py-2 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur text-white"
-                title="Click to enter password"
-              >
-                Click or press any key to sign in
-              </button>
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    // Password screen
     return (
       <div className={`min-h-screen ${WALLPAPER} relative`}>
+        {/* top-right fullscreen */}
+        <button
+          onClick={toggleFullscreen}
+          className="absolute top-3 right-3 z-50 px-3 py-1.5 text-xs rounded-xl bg-white/25 hover:bg-white/35 text-white backdrop-blur"
+          title="Toggle Fullscreen"
+        >
+          Fullscreen
+        </button>
+
+        {/* center box */}
         <div className="absolute inset-0 backdrop-blur-sm" />
         <div className="h-full w-full grid place-items-center">
           <div className="bg-white/80 backdrop-blur-xl border border-white/60 rounded-2xl p-6 w-[320px] shadow-2xl">
             <div className="text-center">
+              <div className="text-5xl font-light text-gray-900">{timeStr}</div>
+              <div className="text-sm text-gray-600 mb-4">{dateStr}</div>
               <div className="text-lg font-semibold text-gray-800">User</div>
               <div className="text-sm text-gray-500 mb-3">Sign in</div>
             </div>
+
             <input
               type="password"
               placeholder="Password"
@@ -402,14 +401,17 @@ export default function EscapeRoomDesktop() {
               }
               className="w-full px-3 py-2 rounded-lg border border-gray-300 outline-none focus:ring-2 focus:ring-blue-400"
             />
+
             <button
               onClick={() => password === correctPassword && setHasUnlocked(true)}
               className="mt-3 w-full px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium"
             >
               Sign in
             </button>
+
+            {/* Optional: remove this hint in production */}
             <div className="mt-3 text-xs text-gray-600">
-              Hint: <code>{correctPassword}</code> (replace with your puzzle)
+              Hint: <code>{correctPassword}</code>
             </div>
           </div>
         </div>
@@ -427,7 +429,7 @@ export default function EscapeRoomDesktop() {
 
   return (
     <div className={`min-h-screen ${WALLPAPER} relative overflow-hidden`}>
-      {/* Desktop icons (Win11-ish) */}
+      {/* Desktop icons */}
       <div className="absolute top-8 left-8 space-y-6 z-10">
         <button
           onClick={() => launch("files")}
@@ -498,8 +500,8 @@ export default function EscapeRoomDesktop() {
         </WindowFrame>
       )}
 
-      {/* Taskbar (centered, Win11-style) */}
-      <div className="fixed bottom-3 left-1/2 -translate-x-1/2 h-12 px-3 rounded-2xl bg黑/30 text-white backdrop-blur-xl shadow-2xl flex items-center gap-2">
+      {/* Taskbar */}
+      <div className="fixed bottom-3 left-1/2 -translate-x-1/2 h-12 px-3 rounded-2xl bg-black/30 text-white backdrop-blur-xl shadow-2xl flex items-center gap-2">
         {["files", "mail", "browser"].map((k) => (
           <button
             key={k}

@@ -27,8 +27,8 @@ import useFullscreen from "../hooks/useFullscreen";
  * public/images/avatar.png   <-- avatar for login
  */
 
-const WALLPAPER =
-  "bg-[radial-gradient(1200px_800px_at_20%_-10%,#a1c4fd_0%,transparent_60%),radial-gradient(1000px_700px_at_100%_0%,#c2e9fb_0%,transparent_50%),linear-gradient(120deg,#7f7fd5_0%,#86a8e7_50%,#91eae4_100%)]";
+// Simpler, CRA-safe background classes
+const WALLPAPER = "bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500";
 
 /* Simple Windows logo (four squares) */
 function WindowsLogo({ className = "w-5 h-5" }) {
@@ -45,7 +45,6 @@ function WindowsLogo({ className = "w-5 h-5" }) {
 function WindowFrame({ title, icon, onClose, onMinimize, onMaximize, children }) {
   return (
     <div className="fixed inset-10 bg-white/95 rounded-2xl shadow-2xl border border-white/60 backdrop-blur-xl flex flex-col z-30 overflow-hidden">
-      {/* Titlebar */}
       <div className="px-3 py-2 border-b border-white/50 bg-white/60 backdrop-blur-lg flex items-center justify-between select-none">
         <div className="flex items-center gap-2">
           {icon}
@@ -181,9 +180,7 @@ function FileExplorer() {
           <img src={path} alt={name} className="max-w-full max-h-full object-contain" />
         </div>
       );
-    return (
-      <div className="p-4 text-sm text-gray-700">No preview available.</div>
-    );
+    return <div className="p-4 text-sm text-gray-700">No preview available.</div>;
   };
 
   return (
@@ -248,9 +245,7 @@ function FileExplorer() {
         {selected ? (
           <div className="w-full h-full">{renderPreview(selected)}</div>
         ) : (
-          <div className="h-full grid place-items-center text-gray-500">
-            Select a file to preview.
-          </div>
+          <div className="h-full grid place-items-center text-gray-500">Select a file to preview.</div>
         )}
       </section>
     </div>
@@ -302,9 +297,7 @@ function MailApp() {
         {selected ? (
           <IFrameViewer src={selected.path} title={selected.subject} />
         ) : (
-          <div className="h-full grid place-items-center text-gray-500">
-            Select an email.
-          </div>
+          <div className="h-full grid place-items-center text-gray-500">Select an email.</div>
         )}
       </section>
     </div>
@@ -347,9 +340,7 @@ function BrowserApp() {
         {selected ? (
           <IFrameViewer src={selected.path} title={selected.title} />
         ) : (
-          <div className="h-full grid place-items-center text-gray-500">
-            Select a page.
-          </div>
+          <div className="h-full grid place-items-center text-gray-500">Select a page.</div>
         )}
       </section>
     </div>
@@ -377,4 +368,180 @@ export default function EscapeRoomDesktop() {
     day: "numeric",
   });
 
-  // --
+  // ---- DESKTOP WINDOW STATE ----
+  const [open, setOpen] = useState({ files: false, mail: false, browser: false });
+  const [minimized, setMinimized] = useState({ files: false, mail: false, browser: false });
+
+  // --- LOGIN SCREEN (centered card, avatar; fullscreen top-right) ---
+  if (!hasUnlocked) {
+    return (
+      <div className={`min-h-screen ${WALLPAPER} relative`}>
+        {/* top-right fullscreen */}
+        <button
+          onClick={toggleFullscreen}
+          className="absolute top-3 right-3 z-50 px-3 py-1.5 text-xs rounded-xl bg-white/25 hover:bg-white/35 text-white backdrop-blur"
+          title="Toggle Fullscreen"
+        >
+          Fullscreen
+        </button>
+
+        <div className="absolute inset-0 backdrop-blur-sm" />
+
+        {/* Centered login card */}
+        <div className="h-full w-full flex items-center justify-center">
+          <div className="bg-white/80 backdrop-blur-xl border border-white/60 rounded-2xl p-6 w-[360px] shadow-2xl">
+            {/* Clock + Date */}
+            <div className="text-center mb-4">
+              <div className="text-5xl font-light text-gray-900">{timeStr}</div>
+              <div className="text-sm text-gray-600">{dateStr}</div>
+            </div>
+
+            {/* Avatar + User */}
+            <div className="flex flex-col items-center mb-3">
+              <img
+                src={`${process.env.PUBLIC_URL}/images/avatar.png`}
+                alt="User avatar"
+                className="w-16 h-16 rounded-full object-cover border border-white/70 shadow"
+                onError={(e) => {
+                  e.currentTarget.style.display = "none";
+                }}
+              />
+              <div className="text-lg font-semibold text-gray-800 mt-2">User</div>
+              <div className="text-sm text-gray-500">Sign in</div>
+            </div>
+
+            {/* Password */}
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={(e) =>
+                e.key === "Enter" && password === correctPassword && setHasUnlocked(true)
+              }
+              className="w-full px-3 py-2 rounded-lg border border-gray-300 outline-none focus:ring-2 focus:ring-blue-400"
+            />
+
+            <button
+              onClick={() => password === correctPassword && setHasUnlocked(true)}
+              className="mt-3 w-full px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium"
+            >
+              Sign in
+            </button>
+
+            {/* Optional: remove in production */}
+            <div className="mt-3 text-xs text-gray-600 text-center">
+              Hint: <code>{correctPassword}</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // --- DESKTOP (after login) ---
+  const launch = (key) => setOpen((o) => ({ ...o, [key]: true }));
+  const close = (key) => {
+    setOpen((o) => ({ ...o, [key]: false }));
+    setMinimized((m) => ({ ...m, [key]: false }));
+  };
+  const minimize = (key) => setMinimized((m) => ({ ...m, [key]: !m[key] }));
+
+  return (
+    <div className={`min-h-screen ${WALLPAPER} relative overflow-hidden`}>
+      {/* WINDOWS-LIKE TASKBAR (bottom, left-aligned) */}
+      <div className="fixed left-0 right-0 bottom-0 h-12 bg-black/35 text-white backdrop-blur-xl shadow-2xl flex items-center px-2 gap-2">
+        {/* Start button (far left) */}
+        <button
+          onClick={() => {}}
+          className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/15"
+          title="Start"
+        >
+          <WindowsLogo className="w-5 h-5" />
+          <span className="hidden sm:inline text-sm">Start</span>
+        </button>
+
+        {/* Search bar */}
+        <div className="hidden sm:flex items-center gap-2 flex-1 max-w-xl bg-white/15 rounded-lg px-3 py-1.5">
+          <Search size={16} />
+          <input
+            className="bg-transparent outline-none text-sm placeholder-white/70 w-full"
+            placeholder="Type here to search"
+            onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
+          />
+        </div>
+
+        {/* Pinned apps */}
+        <div className="flex items-center gap-1 ml-auto sm:ml-2">
+          <button
+            onClick={() => {
+              setOpen((o) => ({ ...o, files: true }));
+              setMinimized((m) => ({ ...m, files: false }));
+            }}
+            className={`px-3 py-2 rounded-lg ${open.files ? "bg-white/25" : "hover:bg-white/15"}`}
+            title="File Explorer"
+          >
+            <Folder />
+          </button>
+          <button
+            onClick={() => {
+              setOpen((o) => ({ ...o, mail: true }));
+              setMinimized((m) => ({ ...m, mail: false }));
+            }}
+            className={`px-3 py-2 rounded-lg ${open.mail ? "bg-white/25" : "hover:bg-white/15"}`}
+            title="Mail"
+          >
+            <Mail />
+          </button>
+          <button
+            onClick={() => {
+              setOpen((o) => ({ ...o, browser: true }));
+              setMinimized((m) => ({ ...m, browser: false }));
+            }}
+            className={`px-3 py-2 rounded-lg ${open.browser ? "bg-white/25" : "hover:bg-white/15"}`}
+            title="Browser"
+          >
+            <Globe />
+          </button>
+        </div>
+      </div>
+
+      {/* APP WINDOWS */}
+      {open.files && !minimized.files && (
+        <WindowFrame
+          title="File Explorer"
+          icon={<Folder size={16} className="text-orange-500" />}
+          onClose={() => close("files")}
+          onMinimize={() => minimize("files")}
+          onMaximize={() => {}}
+        >
+          <FileExplorer />
+        </WindowFrame>
+      )}
+
+      {open.mail && !minimized.mail && (
+        <WindowFrame
+          title="Mail"
+          icon={<Mail size={16} className="text-blue-600" />}
+          onClose={() => close("mail")}
+          onMinimize={() => minimize("mail")}
+          onMaximize={() => {}}
+        >
+          <MailApp />
+        </WindowFrame>
+      )}
+
+      {open.browser && !minimized.browser && (
+        <WindowFrame
+          title="Microsoft Edge"
+          icon={<Globe size={16} className="text-cyan-500" />}
+          onClose={() => close("browser")}
+          onMinimize={() => minimize("browser")}
+          onMaximize={() => {}}
+        >
+          <BrowserApp />
+        </WindowFrame>
+      )}
+    </div>
+  );
+}

@@ -193,7 +193,7 @@ function FileExplorer() {
           <button
             onClick={() => setViewMode("list")}
             className={`p-1 rounded ${
-              viewMode === "list" ? "bg-blue-100 text-blue-600" : "text-gray-600 hover:bg黑/5"
+              viewMode === "list" ? "bg-blue-100 text-blue-600" : "text-gray-600 hover:bg-black/5"
             }`}
             title="List view"
           >
@@ -348,16 +348,17 @@ function BrowserApp() {
 export default function EscapeRoomDesktop() {
   const { toggle: toggleFullscreen } = useFullscreen("#root");
 
-  // Hooks must be unconditional — declare ALL of them up front:
+  // Hooks must be unconditional—declare all of them up front:
   const [hasUnlocked, setHasUnlocked] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
-  const correctPassword = "letmein"; // your puzzle password
+  const correctPassword = "letmein"; // change to your puzzle
 
-  // ✅ Moved ABOVE the login gate so they’re not called conditionally
+  // Desktop window state (declare ONCE here)
   const [open, setOpen] = useState({ files: false, mail: false, browser: false });
   const [minimized, setMinimized] = useState({ files: false, mail: false, browser: false });
 
+  // --- LOGIN GATE (Windows-11 style) ---
   if (!hasUnlocked) {
     // Lock/Welcome screen
     if (!showPassword) {
@@ -396,7 +397,9 @@ export default function EscapeRoomDesktop() {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && password === correctPassword && setHasUnlocked(true)}
+              onKeyDown={(e) =>
+                e.key === "Enter" && password === correctPassword && setHasUnlocked(true)
+              }
               className="w-full px-3 py-2 rounded-lg border border-gray-300 outline-none focus:ring-2 focus:ring-blue-400"
             />
             <button
@@ -415,13 +418,11 @@ export default function EscapeRoomDesktop() {
   }
 
   // --- DESKTOP (after login) ---
-  const [open, setOpen] = useState({ files: false, mail: false, browser: false });
-  const [minimized, setMinimized] = useState({ files: false, mail: false, browser: false });
-
   const launch = (key) => setOpen((o) => ({ ...o, [key]: true }));
-  const close = (key) =>
-    setOpen((o) => ({ ...o, [key]: false })) ||
+  const close = (key) => {
+    setOpen((o) => ({ ...o, [key]: false }));
     setMinimized((m) => ({ ...m, [key]: false }));
+  };
   const minimize = (key) => setMinimized((m) => ({ ...m, [key]: !m[key] }));
 
   return (
@@ -497,15 +498,15 @@ export default function EscapeRoomDesktop() {
         </WindowFrame>
       )}
 
-      {/* Taskbar (centered buttons, Win11-style) */}
-      <div className="fixed bottom-3 left-1/2 -translate-x-1/2 h-12 px-3 rounded-2xl bg-black/30 text-white backdrop-blur-xl shadow-2xl flex items-center gap-2">
+      {/* Taskbar (centered, Win11-style) */}
+      <div className="fixed bottom-3 left-1/2 -translate-x-1/2 h-12 px-3 rounded-2xl bg黑/30 text-white backdrop-blur-xl shadow-2xl flex items-center gap-2">
         {["files", "mail", "browser"].map((k) => (
           <button
             key={k}
-            onClick={() =>
-              setOpen((o) => ({ ...o, [k]: true })) ||
-              setMinimized((m) => ({ ...m, [k]: false }))
-            }
+            onClick={() => {
+              setOpen((o) => ({ ...o, [k]: true }));
+              setMinimized((m) => ({ ...m, [k]: false }));
+            }}
             className={`px-3 py-2 text-sm rounded-xl ${
               open[k] ? "bg-white/30" : "hover:bg-white/20"
             } capitalize`}

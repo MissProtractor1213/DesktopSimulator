@@ -87,8 +87,8 @@ const EscapeRoomDesktop = () => {
               <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-white bg-opacity-20 flex items-center justify-center">
                 <User size={40} />
               </div>
-              <h2 className="text-lg font-light">Agent Smith</h2>
-              <p className="text-sm text-white text-opacity-70 mt-1">agent.smith@company.com</p>
+              <h2 className="text-lg font-light">Other User</h2>
+              <p className="text-sm text-white text-opacity-70 mt-1">other.user@samsung.com</p>
             </div>
             
             <div className="space-y-4">

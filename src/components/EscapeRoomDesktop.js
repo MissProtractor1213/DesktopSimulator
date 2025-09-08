@@ -16,21 +16,20 @@ import {
 import useFullscreen from "../hooks/useFullscreen";
 
 /**
- * Files served from public/ so they render *inside* the window:
+ * Public files (so they render inside iframes/images):
  * public/images/TEAM-PHOTO.png
  * public/images/BUDGET-REPORT.png
+ * public/images/avatar.png
  * public/sim/files/suspicious-email.html
  * public/sim/files/itinerary.html
  * public/sim/files/invoice.html
  * public/sim/files/history-bank.html
  * public/sim/files/company-policy.pdf
- * public/images/avatar.png   <-- avatar for login
  */
 
-// Simpler, CRA-safe background classes
 const WALLPAPER = "bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500";
 
-/* Simple Windows logo (four squares) */
+/* Simple Windows logo */
 function WindowsLogo({ className = "w-5 h-5" }) {
   return (
     <svg viewBox="0 0 256 256" className={className} aria-hidden="true">
@@ -372,11 +371,11 @@ export default function EscapeRoomDesktop() {
   const [open, setOpen] = useState({ files: false, mail: false, browser: false });
   const [minimized, setMinimized] = useState({ files: false, mail: false, browser: false });
 
-  // --- LOGIN SCREEN (centered card, avatar; fullscreen top-right) ---
+  // --- LOGIN SCREEN (centered card; fullscreen top-right) ---
   if (!hasUnlocked) {
     return (
       <div className={`min-h-screen ${WALLPAPER} relative`}>
-        {/* top-right fullscreen */}
+        {/* Fullscreen button at top-right */}
         <button
           onClick={toggleFullscreen}
           className="absolute top-3 right-3 z-50 px-3 py-1.5 text-xs rounded-xl bg-white/25 hover:bg-white/35 text-white backdrop-blur"
@@ -449,9 +448,43 @@ export default function EscapeRoomDesktop() {
 
   return (
     <div className={`min-h-screen ${WALLPAPER} relative overflow-hidden`}>
+      {/* DESKTOP ICONS (left side column) */}
+      <div className="absolute top-8 left-8 space-y-6 z-10">
+        <button
+          onClick={() => launch("files")}
+          className="flex flex-col items-center text-white/90 hover:text-white"
+          title="File Explorer"
+        >
+          <div className="w-14 h-14 grid place-items-center bg-white/30 backdrop-blur rounded-2xl shadow">
+            <Folder />
+          </div>
+          <span className="text-[11px] mt-1">Files</span>
+        </button>
+        <button
+          onClick={() => launch("mail")}
+          className="flex flex-col items-center text-white/90 hover:text-white"
+          title="Mail"
+        >
+          <div className="w-14 h-14 grid place-items-center bg-white/30 backdrop-blur rounded-2xl shadow">
+            <Mail />
+          </div>
+          <span className="text-[11px] mt-1">Mail</span>
+        </button>
+        <button
+          onClick={() => launch("browser")}
+          className="flex flex-col items-center text-white/90 hover:text-white"
+          title="Browser"
+        >
+          <div className="w-14 h-14 grid place-items-center bg-white/30 backdrop-blur rounded-2xl shadow">
+            <Globe />
+          </div>
+          <span className="text-[11px] mt-1">Browser</span>
+        </button>
+      </div>
+
       {/* WINDOWS-LIKE TASKBAR (bottom, left-aligned) */}
       <div className="fixed left-0 right-0 bottom-0 h-12 bg-black/35 text-white backdrop-blur-xl shadow-2xl flex items-center px-2 gap-2">
-        {/* Start button (far left) */}
+        {/* Start */}
         <button
           onClick={() => {}}
           className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/15"
@@ -461,7 +494,7 @@ export default function EscapeRoomDesktop() {
           <span className="hidden sm:inline text-sm">Start</span>
         </button>
 
-        {/* Search bar */}
+        {/* Search */}
         <div className="hidden sm:flex items-center gap-2 flex-1 max-w-xl bg-white/15 rounded-lg px-3 py-1.5">
           <Search size={16} />
           <input

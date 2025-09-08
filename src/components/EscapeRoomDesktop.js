@@ -930,6 +930,14 @@ HR Team`
       <WinCompleteModal />
 
       {showStartMenu && <div className="fixed inset-0 z-20" onClick={() => setShowStartMenu(false)}></div>}
+      {/* Floating fullscreen toggle (tablet friendly) */}
+       <button
+         onClick={toggleFullscreen}
+         className="fixed right-4 bottom-4 z-50 rounded-md bg-gray-800 text-white text-sm px-3 py-2 shadow-md hover:bg-gray-700"
+         aria-label="Toggle fullscreen"
+       >
+        Fullscreen
+       </button>
     </div>
   );
 };

@@ -302,4 +302,163 @@ function MailApp() {
         {selected ? (
           <IFrameViewer src={selected.path} title={selected.subject} />
         ) : (
-          <div className="h-full flex items-center justify-center tex
+          <div className="h-full flex items-center justify-center text-gray-500">
+            Select an email.
+          </div>
+        )}
+      </section>
+    </div>
+  );
+}
+
+function BrowserApp() {
+  const pages = [
+    {
+      id: "bank",
+      title: "MyBank — Login",
+      path: `${process.env.PUBLIC_URL}/sim/files/history-bank.html`,
+    },
+    {
+      id: "company-policy",
+      title: "Company Policy (PDF)",
+      path: `${process.env.PUBLIC_URL}/sim/files/company-policy.pdf`,
+    },
+  ];
+  const [selected, setSelected] = useState(pages[0]);
+
+  return (
+    <div className="h-full flex min-h-0">
+      <aside className="w-80 border-r border-gray-200 overflow-auto">
+        <h3 className="px-3 py-2 font-semibold text-gray-800">Recent</h3>
+        {pages.map((p) => (
+          <div
+            key={p.id}
+            onClick={() => setSelected(p)}
+            className={`px-3 py-2 cursor-pointer border-b ${
+              selected?.id === p.id ? "bg-gray-100" : "hover:bg-gray-50"
+            }`}
+          >
+            <div className="text-sm text-gray-800">{p.title}</div>
+          </div>
+        ))}
+      </aside>
+      <section className="flex-1 min-h-0">
+        {selected ? (
+          <IFrameViewer src={selected.path} title={selected.title} />
+        ) : (
+          <div className="h-full flex items-center justify-center text-gray-500">
+            Select a page.
+          </div>
+        )}
+      </section>
+    </div>
+  );
+}
+
+export default function EscapeRoomDesktop() {
+  const { toggle: toggleFullscreen } = useFullscreen("#root");
+  const [open, setOpen] = useState({ files: false, mail: false, browser: false });
+  const [minimized, setMinimized] = useState({ files: false, mail: false, browser: false });
+
+  const launch = (key) => setOpen((o) => ({ ...o, [key]: true }));
+  const close = (key) =>
+    setOpen((o) => ({ ...o, [key]: false })) ||
+    setMinimized((m) => ({ ...m, [key]: false }));
+  const minimize = (key) =>
+    setMinimized((m) => ({ ...m, [key]: !m[key] }));
+
+  return (
+    <div className={`min-h-screen ${DESKTOP_BG} relative overflow-hidden`}>
+      {/* Desktop icons */}
+      <div className="absolute top-8 left-8 space-y-4 z-10">
+        <button
+          onClick={() => launch("files")}
+          className="flex flex-col items-center text-white/90 hover:text-white"
+          title="File Explorer"
+        >
+          <Folder />
+          <span className="text-xs mt-1">Files</span>
+        </button>
+        <button
+          onClick={() => launch("mail")}
+          className="flex flex-col items-center text-white/90 hover:text-white"
+          title="Mail"
+        >
+          <Mail />
+          <span className="text-xs mt-1">Mail</span>
+        </button>
+        <button
+          onClick={() => launch("browser")}
+          className="flex flex-col items-center text-white/90 hover:text-white"
+          title="Browser"
+        >
+          <Globe />
+          <span className="text-xs mt-1">Browser</span>
+        </button>
+      </div>
+
+      {/* Windows */}
+      {open.files && !minimized.files && (
+        <WindowFrame
+          title="File Explorer"
+          icon={<Folder size={16} className="text-orange-500" />}
+          onClose={() => close("files")}
+          onMinimize={() => minimize("files")}
+          onMaximize={() => {}}
+        >
+          <FileExplorer />
+        </WindowFrame>
+      )}
+
+      {open.mail && !minimized.mail && (
+        <WindowFrame
+          title="Mail"
+          icon={<Mail size={16} className="text-blue-600" />}
+          onClose={() => close("mail")}
+          onMinimize={() => minimize("mail")}
+          onMaximize={() => {}}
+        >
+          <MailApp />
+        </WindowFrame>
+      )}
+
+      {open.browser && !minimized.browser && (
+        <WindowFrame
+          title="Microsoft Edge"
+          icon={<Globe size={16} className="text-cyan-500" />}
+          onClose={() => close("browser")}
+          onMinimize={() => minimize("browser")}
+          onMaximize={() => {}}
+        >
+          <BrowserApp />
+        </WindowFrame>
+      )}
+
+      {/* Simple taskbar (shows minimized states) */}
+      <div className="fixed bottom-0 left-0 right-0 h-10 bg-black/30 backdrop-blur-sm flex items-center gap-2 px-3">
+        {["files", "mail", "browser"].map((k) => (
+          <button
+            key={k}
+            onClick={() =>
+              setOpen((o) => ({ ...o, [k]: true })) ||
+              setMinimized((m) => ({ ...m, [k]: false }))
+            }
+            className={`px-2 py-1 text-xs rounded ${
+              open[k] ? "bg-white/20 text-white" : "bg-white/10 text-white/80"
+            }`}
+          >
+            {k}
+          </button>
+        ))}
+        <div className="ml-auto" />
+        <button
+          onClick={toggleFullscreen}
+          className="px-3 py-1 text-xs rounded bg-white/20 text-white hover:bg-white/30"
+          title="Toggle Fullscreen"
+        >
+          Fullscreen
+        </button>
+      </div>
+    </div>
+  );
+}

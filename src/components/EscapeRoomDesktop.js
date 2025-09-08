@@ -1,3 +1,4 @@
+import useFullScreen from '../hooks/useFullscreen';
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   Monitor, Lock, Mail, Folder, Globe, User, X, Minus, Square,
@@ -27,6 +28,8 @@ const EscapeRoomDesktop = () => {
   const [showStartMenu, setShowStartMenu] = useState(false);
   const [foundClues, setFoundClues] = useState({ email: false, documents: false, browser: false });
   const [gameComplete, setGameComplete] = useState(false);
+  const { toggle: toggleFullscreen } = useFullscreen('#root'); // or a more specific container
+
 
   // minimal "minimize" support (keeps app open but hides window)
   const [minimized, setMinimized] = useState({});

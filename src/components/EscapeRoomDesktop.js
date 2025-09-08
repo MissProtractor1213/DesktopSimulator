@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Monitor, Folder, Mail, Globe, User, Lock, X, Minimize, Volume2, Wifi, Battery, FileText, FileSpreadsheet, File, Image } from 'lucide-react';
 
 const EscapeRoomDesktop = () => {
-  // State declarations
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [password, setPassword] = useState('');
   const [openApps, setOpenApps] = useState([]);
@@ -18,17 +17,12 @@ const EscapeRoomDesktop = () => {
 
   const CORRECT_PASSWORD = 'CRIMSON2024';
 
-  // Effects and handlers
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 30000);
     return () => clearInterval(timer);
   }, []);
 
   const handleLogin = useCallback(() => {
-    console.log('Login attempt with password:', password);
-    console.log('Expected password:', CORRECT_PASSWORD);
-    console.log('Passwords match:', password === CORRECT_PASSWORD);
-    
     if (password === CORRECT_PASSWORD) {
       setIsLoggedIn(true);
     } else {
@@ -38,13 +32,10 @@ const EscapeRoomDesktop = () => {
   }, [password]);
 
   const handlePasswordChange = useCallback((e) => {
-    const newPassword = e.target.value;
-    console.log('Password changed to:', newPassword);
-    setPassword(newPassword);
+    setPassword(e.target.value);
   }, []);
 
   const handlePasswordKeyPress = useCallback((e) => {
-    console.log('Key pressed:', e.key);
     if (e.key === 'Enter') {
       e.preventDefault();
       handleLogin();
@@ -76,11 +67,10 @@ const EscapeRoomDesktop = () => {
     });
   }, []);
 
-  // Login Screen Component
   if (!isLoggedIn) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 flex items-center justify-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.03"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] animate-pulse"></div>
+        <div className="absolute inset-0 bg-pattern animate-pulse opacity-10"></div>
         
         <div className="bg-black bg-opacity-40 backdrop-blur-xl p-8 rounded-2xl shadow-2xl border border-white border-opacity-20 w-96 relative z-10">
           <div className="text-center mb-8">
@@ -130,8 +120,17 @@ const EscapeRoomDesktop = () => {
         name: 'Meeting_Notes.txt', 
         type: 'text', 
         suspicious: true, 
-        content: 'Project CRIMSON - Operational Brief\n=================================\n\nTIMELINE: Tonight, 23:00 hours\nOBJECTIVE: Data extraction from mainframe\nCOVER: Routine system maintenance\n\nREMINDER: Vault access code is with Director Hayes\nWARNING: Clear all browser history after accessing security protocols\n\nEnd transmission.', 
-        icon: 'text',
+        content: `Project CRIMSON - Operational Brief
+=================================
+
+TIMELINE: Tonight, 23:00 hours
+OBJECTIVE: Data extraction from mainframe
+COVER: Routine system maintenance
+
+REMINDER: Vault access code is with Director Hayes
+WARNING: Clear all browser history after accessing security protocols
+
+End transmission.`, 
         size: '2.1 KB',
         modified: 'Today 2:15 PM'
       },
@@ -139,28 +138,62 @@ const EscapeRoomDesktop = () => {
         name: 'Budget_Report.xlsx', 
         type: 'excel', 
         suspicious: false, 
-        icon: 'excel',
         size: '48.3 KB',
         modified: 'Yesterday 4:30 PM',
-        content: 'MERIDIAN CORP - Q4 BUDGET ANALYSIS\n================================\n\nDEPARTMENT ALLOCATIONS:\n• Security Systems: $2.4M\n• IT Infrastructure: $1.8M\n• Personnel: $3.2M\n• Operations: $1.6M\n\nSPECIAL PROJECTS:\n• Project NIGHTFALL: $500K (CLASSIFIED)\n• Facility Upgrade B-7: $750K\n• Emergency Protocols: $200K\n\nNOTE: All classified project funds are routed through offshore accounts.\nAccess codes maintained by Director Hayes only.'
+        content: `MERIDIAN CORP - Q4 BUDGET ANALYSIS
+================================
+
+DEPARTMENT ALLOCATIONS:
+• Security Systems: $2.4M
+• IT Infrastructure: $1.8M
+• Personnel: $3.2M
+• Operations: $1.6M
+
+SPECIAL PROJECTS:
+• Project NIGHTFALL: $500K (CLASSIFIED)
+• Facility Upgrade B-7: $750K
+• Emergency Protocols: $200K
+
+NOTE: All classified project funds are routed through offshore accounts.
+Access codes maintained by Director Hayes only.`
       },
       { 
         name: 'Team photo.pdf', 
         type: 'pdf', 
         suspicious: true, 
-        icon: 'pdf',
         size: '156.7 KB',
         modified: 'Today 1:45 PM',
-        content: '⚠️ CLASSIFIED DOCUMENT ⚠️\n\nOPERATION NIGHTFALL - PERSONNEL DOSSIER\n=====================================\n\nAGENT ASSIGNMENTS:\n• Agent Smith - Lead Infiltrator\n• Agent Johnson - Systems Specialist  \n• Agent Davis - Extraction Coordinator\n\nTARGET FACILITY: Meridian Complex, Level B-7\nEXTRACTION POINT: Service tunnel, Grid Reference: X-47-Alpha\n\nSECURITY PROTOCOLS:\n- Biometric scanners offline: 23:15-23:45\n- Guard rotation change: 23:30\n- Emergency lockdown override: Code PHOENIX-7791\n\n❗ This document was disguised as "Team photo.pdf" to avoid detection ❗'
+        content: `⚠️ CLASSIFIED DOCUMENT ⚠️
+
+OPERATION NIGHTFALL - PERSONNEL DOSSIER
+=====================================
+
+AGENT ASSIGNMENTS:
+• Agent Smith - Lead Infiltrator
+• Agent Johnson - Systems Specialist  
+• Agent Davis - Extraction Coordinator
+
+TARGET FACILITY: Meridian Complex, Level B-7
+EXTRACTION POINT: Service tunnel, Grid Reference: X-47-Alpha
+
+SECURITY PROTOCOLS:
+- Biometric scanners offline: 23:15-23:45
+- Guard rotation change: 23:30
+- Emergency lockdown override: Code PHOENIX-7791
+
+❗ This document was disguised as "Team photo.pdf" to avoid detection ❗`
       },
       { 
         name: 'Team_Meeting.jpg', 
         type: 'image', 
         suspicious: false, 
-        icon: 'image',
         size: '245.8 KB',
         modified: 'Last week',
-        content: 'TEAM MEETING PHOTO\n==================\n\nThis appears to be a normal team photo from last week\'s meeting.\nNothing suspicious found in this file.'
+        content: `TEAM MEETING PHOTO
+==================
+
+This appears to be a normal team photo from last week's meeting.
+Nothing suspicious found in this file.`
       }
     ];
 
@@ -222,7 +255,6 @@ const EscapeRoomDesktop = () => {
 
     return (
       <div className="h-full flex flex-col bg-gray-50">
-        {/* Toolbar */}
         <div className="bg-white border-b px-4 py-3 flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <h3 className="font-semibold text-gray-800">Documents</h3>
@@ -254,7 +286,6 @@ const EscapeRoomDesktop = () => {
         </div>
         
         <div className="flex-1 flex">
-          {/* File List */}
           <div className="w-1/2 p-4 bg-white overflow-auto border-r">
             {viewMode === 'grid' ? (
               <div className="grid grid-cols-3 gap-4">
@@ -298,7 +329,6 @@ const EscapeRoomDesktop = () => {
             )}
           </div>
           
-          {/* File Preview */}
           <div className="w-1/2 p-4 bg-gray-50">
             {selectedFile ? (
               <div>
@@ -327,13 +357,13 @@ const EscapeRoomDesktop = () => {
       {
         id: 1,
         from: 'director.hayes@company.com',
-        subject: 'RE: Tonight\'s Maintenance Schedule',
+        subject: 'RE: Tonight Maintenance Schedule',
         preview: 'Confirming the system maintenance window...',
         time: '2:30 PM',
         suspicious: true,
         content: `From: Director Hayes <director.hayes@company.com>
 To: Agent Smith <agent.smith@company.com>
-Subject: RE: Tonight's Maintenance Schedule
+Subject: RE: Tonight Maintenance Schedule
 
 Agent Smith,
 
@@ -380,7 +410,7 @@ Security Department`
         id: 3,
         from: 'hr@company.com',
         subject: 'Team Building Event - Friday',
-        preview: 'Don\'t forget about our team building event...',
+        preview: 'Do not forget about our team building event...',
         time: '11:30 AM',
         suspicious: false,
         content: `From: Human Resources <hr@company.com>
@@ -389,7 +419,7 @@ Subject: Team Building Event - Friday
 
 Hello everyone!
 
-Don't forget about our team building event this Friday at 6 PM in the main conference room.
+Do not forget about our team building event this Friday at 6 PM in the main conference room.
 
 Activities include:
 - Team trivia
@@ -412,7 +442,6 @@ HR Team`
 
     return (
       <div className="h-full flex bg-white">
-        {/* Email List */}
         <div className="w-1/3 border-r border-gray-200 flex flex-col">
           <div className="bg-gray-50 px-4 py-3 border-b">
             <h3 className="font-semibold text-gray-800">Inbox</h3>
@@ -452,7 +481,6 @@ HR Team`
           </div>
         </div>
         
-        {/* Email Content */}
         <div className="flex-1 flex flex-col">
           {selectedEmail ? (
             <div className="flex-1 overflow-y-auto">
@@ -503,10 +531,8 @@ HR Team`
     const [showHistory, setShowHistory] = useState(false);
 
     const handleHistoryClick = () => {
-      console.log('History button clicked, current showHistory:', showHistory);
       setShowHistory(true);
       markClueFound('browser');
-      console.log('History should now be visible, showHistory set to:', true);
     };
 
     const browserHistory = [
@@ -602,7 +628,6 @@ HR Team`
 
     return (
       <div className="fixed bottom-16 left-1/2 transform -translate-x-1/2 w-96 bg-black bg-opacity-80 backdrop-blur-xl text-white rounded-xl border border-white border-opacity-20 shadow-2xl z-50 overflow-hidden">
-        {/* User Profile Section */}
         <div className="p-6 border-b border-white border-opacity-10">
           <div className="flex items-center space-x-4">
             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
@@ -615,7 +640,6 @@ HR Team`
           </div>
         </div>
 
-        {/* Recommended Apps */}
         <div className="p-6">
           <h3 className="text-sm font-medium text-white text-opacity-80 mb-4 uppercase tracking-wider">Recommended</h3>
           <div className="space-y-2">
@@ -637,7 +661,6 @@ HR Team`
           </div>
         </div>
 
-        {/* Power Options */}
         <div className="border-t border-white border-opacity-10 p-4">
           <div className="flex justify-end">
             <button className="w-10 h-10 rounded-lg bg-white bg-opacity-10 hover:bg-opacity-20 flex items-center justify-center transition-colors">
@@ -670,10 +693,9 @@ HR Team`
     };
 
     return (
-      <div className={`fixed inset-8 bg-white rounded-xl shadow-2xl border border-gray-200 flex flex-col backdrop-blur-lg z-30 overflow-hidden ${
+      <div className={`fixed inset-8 bg-white rounded-xl shadow-2xl border border-gray-200 flex flex-col backdrop-blur-lg overflow-hidden ${
         activeApp === app ? 'z-40' : 'z-30'
       }`}>
-        {/* Window Header */}
         <div className="bg-gray-50 border-b border-gray-200 px-4 py-3 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             {getAppIcon(app)}
@@ -695,7 +717,6 @@ HR Team`
           </div>
         </div>
         
-        {/* Window Content */}
         <div className="flex-1 overflow-hidden">
           {children}
         </div>
@@ -712,7 +733,6 @@ HR Team`
 
     return (
       <div className="fixed bottom-0 left-0 right-0 h-14 bg-black bg-opacity-70 backdrop-blur-xl border-t border-white border-opacity-20 flex items-center justify-center px-4 z-40">
-        {/* Start Button */}
         <button
           onClick={() => setShowStartMenu(!showStartMenu)}
           className="h-10 px-6 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg flex items-center space-x-2 mr-4 shadow-lg transition-all duration-200 hover:scale-105"
@@ -720,7 +740,6 @@ HR Team`
           <div className="w-4 h-4 bg-white rounded-sm shadow-sm"></div>
         </button>
 
-        {/* Pinned Apps */}
         <div className="flex space-x-1 mr-4">
           {pinnedApps.map(app => {
             const isOpen = openApps.includes(app.id);
@@ -747,7 +766,6 @@ HR Team`
           })}
         </div>
 
-        {/* System Tray */}
         <div className="flex-1"></div>
         <div className="flex items-center space-x-3 text-white text-opacity-80">
           <Wifi size={16} />
@@ -770,7 +788,7 @@ HR Team`
           <div className="text-6xl mb-4">🔓</div>
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Investigation Complete!</h2>
           <p className="text-gray-600 mb-6">
-            You've successfully uncovered all the evidence. Agent Smith's suspicious activities have been exposed through the documents, emails, and browser history.
+            You have successfully uncovered all the evidence. Agent Smith's suspicious activities have been exposed through the documents, emails, and browser history.
           </p>
           <div className="text-sm text-gray-600 mb-6">
             ✅ Documents examined<br />
@@ -788,15 +806,12 @@ HR Team`
     );
   };
 
-  // Main Desktop Render
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 relative overflow-hidden">
-      {/* Wallpaper Pattern */}
       <div className="absolute inset-0 opacity-20">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Ccircle cx="30" cy="30" r="4"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]"></div>
+        <div className="absolute inset-0 bg-pattern"></div>
       </div>
 
-      {/* Desktop Icons */}
       <div className="absolute top-8 left-8 space-y-6 z-10">
         <div 
           className="flex flex-col items-center cursor-pointer p-3 hover:bg-white hover:bg-opacity-10 rounded-lg transition-all duration-200 group"
@@ -829,7 +844,6 @@ HR Team`
         </div>
       </div>
 
-      {/* Open Applications */}
       {openApps.includes('files') && (
         <WindowFrame app="files">
           <FileExplorer />
@@ -848,12 +862,10 @@ HR Team`
         </WindowFrame>
       )}
 
-      {/* UI Components */}
       <StartMenu />
       <Taskbar />
       <WinCompleteModal />
 
-      {/* Click outside to close start menu */}
       {showStartMenu && (
         <div 
           className="fixed inset-0 z-20" 

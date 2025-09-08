@@ -11,6 +11,7 @@ import {
   FileText,
   Image as ImageIcon,
   FileSpreadsheet,
+  Search,
 } from "lucide-react";
 import useFullscreen from "../hooks/useFullscreen";
 
@@ -23,14 +24,27 @@ import useFullscreen from "../hooks/useFullscreen";
  * public/sim/files/invoice.html
  * public/sim/files/history-bank.html
  * public/sim/files/company-policy.pdf
+ * public/images/avatar.png   <-- avatar for login
  */
 
 const WALLPAPER =
   "bg-[radial-gradient(1200px_800px_at_20%_-10%,#a1c4fd_0%,transparent_60%),radial-gradient(1000px_700px_at_100%_0%,#c2e9fb_0%,transparent_50%),linear-gradient(120deg,#7f7fd5_0%,#86a8e7_50%,#91eae4_100%)]";
 
+/* Simple Windows logo (four squares) */
+function WindowsLogo({ className = "w-5 h-5" }) {
+  return (
+    <svg viewBox="0 0 256 256" className={className} aria-hidden="true">
+      <rect x="16" y="16" width="104" height="104" fill="currentColor" />
+      <rect x="136" y="16" width="104" height="104" fill="currentColor" />
+      <rect x="16" y="136" width="104" height="104" fill="currentColor" />
+      <rect x="136" y="136" width="104" height="104" fill="currentColor" />
+    </svg>
+  );
+}
+
 function WindowFrame({ title, icon, onClose, onMinimize, onMaximize, children }) {
   return (
-    <div className="fixed inset-6 bg-white/95 rounded-2xl shadow-2xl border border-white/60 backdrop-blur-xl flex flex-col z-30 overflow-hidden">
+    <div className="fixed inset-10 bg-white/95 rounded-2xl shadow-2xl border border-white/60 backdrop-blur-xl flex flex-col z-30 overflow-hidden">
       {/* Titlebar */}
       <div className="px-3 py-2 border-b border-white/50 bg-white/60 backdrop-blur-lg flex items-center justify-between select-none">
         <div className="flex items-center gap-2">
@@ -363,168 +377,4 @@ export default function EscapeRoomDesktop() {
     day: "numeric",
   });
 
-  // ---- DESKTOP WINDOW STATE ----
-  const [open, setOpen] = useState({ files: false, mail: false, browser: false });
-  const [minimized, setMinimized] = useState({ files: false, mail: false, browser: false });
-
-  // --- LOGIN SCREEN ---
-  if (!hasUnlocked) {
-    return (
-      <div className={`min-h-screen ${WALLPAPER} relative`}>
-        {/* top-right fullscreen */}
-        <button
-          onClick={toggleFullscreen}
-          className="absolute top-3 right-3 z-50 px-3 py-1.5 text-xs rounded-xl bg-white/25 hover:bg-white/35 text-white backdrop-blur"
-          title="Toggle Fullscreen"
-        >
-          Fullscreen
-        </button>
-
-        {/* center box */}
-        <div className="absolute inset-0 backdrop-blur-sm" />
-        <div className="h-full w-full grid place-items-center">
-          <div className="bg-white/80 backdrop-blur-xl border border-white/60 rounded-2xl p-6 w-[320px] shadow-2xl">
-            <div className="text-center">
-              <div className="text-5xl font-light text-gray-900">{timeStr}</div>
-              <div className="text-sm text-gray-600 mb-4">{dateStr}</div>
-              <div className="text-lg font-semibold text-gray-800">User</div>
-              <div className="text-sm text-gray-500 mb-3">Sign in</div>
-            </div>
-
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              onKeyDown={(e) =>
-                e.key === "Enter" && password === correctPassword && setHasUnlocked(true)
-              }
-              className="w-full px-3 py-2 rounded-lg border border-gray-300 outline-none focus:ring-2 focus:ring-blue-400"
-            />
-
-            <button
-              onClick={() => password === correctPassword && setHasUnlocked(true)}
-              className="mt-3 w-full px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium"
-            >
-              Sign in
-            </button>
-
-            {/* Optional: remove this hint in production */}
-            <div className="mt-3 text-xs text-gray-600">
-              Hint: <code>{correctPassword}</code>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // --- DESKTOP (after login) ---
-  const launch = (key) => setOpen((o) => ({ ...o, [key]: true }));
-  const close = (key) => {
-    setOpen((o) => ({ ...o, [key]: false }));
-    setMinimized((m) => ({ ...m, [key]: false }));
-  };
-  const minimize = (key) => setMinimized((m) => ({ ...m, [key]: !m[key] }));
-
-  return (
-    <div className={`min-h-screen ${WALLPAPER} relative overflow-hidden`}>
-      {/* Desktop icons */}
-      <div className="absolute top-8 left-8 space-y-6 z-10">
-        <button
-          onClick={() => launch("files")}
-          className="flex flex-col items-center text-white/90 hover:text-white"
-          title="File Explorer"
-        >
-          <div className="w-14 h-14 grid place-items-center bg-white/30 backdrop-blur rounded-2xl shadow">
-            <Folder />
-          </div>
-          <span className="text-[11px] mt-1">Files</span>
-        </button>
-        <button
-          onClick={() => launch("mail")}
-          className="flex flex-col items-center text-white/90 hover:text-white"
-          title="Mail"
-        >
-          <div className="w-14 h-14 grid place-items-center bg-white/30 backdrop-blur rounded-2xl shadow">
-            <Mail />
-          </div>
-          <span className="text-[11px] mt-1">Mail</span>
-        </button>
-        <button
-          onClick={() => launch("browser")}
-          className="flex flex-col items-center text-white/90 hover:text-white"
-          title="Browser"
-        >
-          <div className="w-14 h-14 grid place-items-center bg-white/30 backdrop-blur rounded-2xl shadow">
-            <Globe />
-          </div>
-          <span className="text-[11px] mt-1">Browser</span>
-        </button>
-      </div>
-
-      {/* Windows */}
-      {open.files && !minimized.files && (
-        <WindowFrame
-          title="File Explorer"
-          icon={<Folder size={16} className="text-orange-500" />}
-          onClose={() => close("files")}
-          onMinimize={() => minimize("files")}
-          onMaximize={() => {}}
-        >
-          <FileExplorer />
-        </WindowFrame>
-      )}
-
-      {open.mail && !minimized.mail && (
-        <WindowFrame
-          title="Mail"
-          icon={<Mail size={16} className="text-blue-600" />}
-          onClose={() => close("mail")}
-          onMinimize={() => minimize("mail")}
-          onMaximize={() => {}}
-        >
-          <MailApp />
-        </WindowFrame>
-      )}
-
-      {open.browser && !minimized.browser && (
-        <WindowFrame
-          title="Microsoft Edge"
-          icon={<Globe size={16} className="text-cyan-500" />}
-          onClose={() => close("browser")}
-          onMinimize={() => minimize("browser")}
-          onMaximize={() => {}}
-        >
-          <BrowserApp />
-        </WindowFrame>
-      )}
-
-      {/* Taskbar */}
-      <div className="fixed bottom-3 left-1/2 -translate-x-1/2 h-12 px-3 rounded-2xl bg-black/30 text-white backdrop-blur-xl shadow-2xl flex items-center gap-2">
-        {["files", "mail", "browser"].map((k) => (
-          <button
-            key={k}
-            onClick={() => {
-              setOpen((o) => ({ ...o, [k]: true }));
-              setMinimized((m) => ({ ...m, [k]: false }));
-            }}
-            className={`px-3 py-2 text-sm rounded-xl ${
-              open[k] ? "bg-white/30" : "hover:bg-white/20"
-            } capitalize`}
-          >
-            {k}
-          </button>
-        ))}
-        <div className="w-px h-6 bg-white/30 mx-2" />
-        <button
-          onClick={toggleFullscreen}
-          className="px-3 py-2 text-sm rounded-xl bg-white/20 hover:bg-white/30"
-          title="Toggle Fullscreen"
-        >
-          Fullscreen
-        </button>
-      </div>
-    </div>
-  );
-}
+  // --

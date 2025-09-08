@@ -348,12 +348,15 @@ function BrowserApp() {
 export default function EscapeRoomDesktop() {
   const { toggle: toggleFullscreen } = useFullscreen("#root");
 
-  // --- LOGIN GATE (Windows-11 style lock screen -> password) ---
+  // Hooks must be unconditional — declare ALL of them up front:
   const [hasUnlocked, setHasUnlocked] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
+  const correctPassword = "letmein"; // your puzzle password
 
-  const correctPassword = "letmein"; // change to your puzzle password
+  // ✅ Moved ABOVE the login gate so they’re not called conditionally
+  const [open, setOpen] = useState({ files: false, mail: false, browser: false });
+  const [minimized, setMinimized] = useState({ files: false, mail: false, browser: false });
 
   if (!hasUnlocked) {
     // Lock/Welcome screen

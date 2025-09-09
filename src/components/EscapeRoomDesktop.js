@@ -104,17 +104,15 @@ function FileExplorer() {
   const files = useMemo(
     () => [
       {
-        name: "TEAM-PHOTO.png",
+        name: "TEAM-PHOTO.pdf",
         type: "image",
-        suspicious: false,
         size: "1.2 MB",
         modified: "Today 3:10 PM",
         path: `${process.env.PUBLIC_URL}/images/TEAM-PHOTO.png`,
       },
       {
-        name: "BUDGET-REPORT.png",
+        name: "BUDGET-REPORT.pdf",
         type: "image",
-        suspicious: true,
         size: "980 KB",
         modified: "Today 3:12 PM",
         path: `${process.env.PUBLIC_URL}/images/BUDGET-REPORT.png`,
@@ -122,7 +120,6 @@ function FileExplorer() {
       {
         name: "suspicious-email.html",
         type: "html",
-        suspicious: true,
         size: "3.1 KB",
         modified: "Today 3:35 PM",
         path: `${process.env.PUBLIC_URL}/sim/files/suspicious-email.html`,
@@ -130,7 +127,6 @@ function FileExplorer() {
       {
         name: "company-policy.pdf",
         type: "pdf",
-        suspicious: false,
         size: "220 KB",
         modified: "Yesterday 4:02 PM",
         path: `${process.env.PUBLIC_URL}/sim/files/company-policy.pdf`,
@@ -138,7 +134,6 @@ function FileExplorer() {
       {
         name: "history-bank.html",
         type: "html",
-        suspicious: true,
         size: "2.4 KB",
         modified: "Yesterday 5:48 PM",
         path: `${process.env.PUBLIC_URL}/sim/files/history-bank.html`,

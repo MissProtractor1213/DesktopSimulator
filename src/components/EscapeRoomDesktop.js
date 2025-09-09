@@ -374,7 +374,8 @@ export default function EscapeRoomDesktop() {
   // --- LOGIN SCREEN (centered card; fullscreen top-right) ---
   if (!hasUnlocked) {
     return (
-      <div className={`min-h-screen ${WALLPAPER} relative`}>
+      // CHANGED: min-h-screen -> h-screen to give child a definite height
+      <div className={`h-screen ${WALLPAPER} relative`}>
         {/* Fullscreen button at top-right */}
         <button
           onClick={toggleFullscreen}
@@ -386,8 +387,8 @@ export default function EscapeRoomDesktop() {
 
         <div className="absolute inset-0 backdrop-blur-sm" />
 
-        {/* Centered login card */}
-        <div className="h-full w-full flex items-center justify-center">
+        {/* CHANGED: make this container fill the viewport and center */}
+        <div className="absolute inset-0 flex items-center justify-center">
           <div className="bg-white/80 backdrop-blur-xl border border-white/60 rounded-2xl p-6 w-[360px] shadow-2xl">
             {/* Clock + Date */}
             <div className="text-center mb-4">

@@ -104,13 +104,6 @@ function FileExplorer() {
   const files = useMemo(
     () => [
       {
-        name: "TEAM-PHOTO.pdf",
-        type: "image",
-        size: "1.2 MB",
-        modified: "Today 3:10 PM",
-        path: `${process.env.PUBLIC_URL}/images/TEAM-PHOTO.png`,
-      },
-      {
         name: "BUDGET-REPORT.pdf",
         type: "image",
         size: "980 KB",
@@ -130,6 +123,13 @@ function FileExplorer() {
         size: "220 KB",
         modified: "Yesterday 4:02 PM",
         path: `${process.env.PUBLIC_URL}/sim/files/company-policy.pdf`,
+      },
+      {
+        name: "TEAM-PHOTO.pdf",
+        type: "image",
+        size: "1.2 MB",
+        modified: "Today 3:10 PM",
+        path: `${process.env.PUBLIC_URL}/images/TEAM-PHOTO.png`,
       },
       {
         name: "itinerary.html",

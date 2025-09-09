@@ -426,7 +426,7 @@ export default function EscapeRoomDesktop() {
 
             {/* Optional: remove in production */}
             <div className="mt-3 text-xs text-gray-600 text-center">
-              Hint: <code>{correctPassword}</code>
+              Hint: "Look at the sticky notes"
             </div>
           </div>
         </div>

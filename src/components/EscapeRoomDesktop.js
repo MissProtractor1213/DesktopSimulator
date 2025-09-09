@@ -259,6 +259,12 @@ function MailApp() {
       from: "alerts@corp.com",
       path: `${process.env.PUBLIC_URL}/sim/files/suspicious-email.html`,
     },
+    {
+      id: 4,
+      subject: "Secret Code",
+      from: "sus@corp.com",
+      path: `${process.env.PUBLIC_URL}/sim/files/suspicious-email2.html`,
+    },
   ];
   const [selected, setSelected] = useState(emails[0]);
 

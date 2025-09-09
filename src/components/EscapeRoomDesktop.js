@@ -305,13 +305,13 @@ function BrowserApp() {
       path: `${process.env.PUBLIC_URL}/sim/files/history-bank.html`,
     },
     {
-      id: "evade",
-      title: "How to evade cybersecurity.",
-      path: `${process.env.PUBLIC_URL}/sim/files/evade-cyber.html`,
+      id: "awareness",
+      title: "Staying Secure: Why Cybersecurity Procedures Matter",
+      path: `${process.env.PUBLIC_URL}/sim/files/cyber-article.html`,
     },
     {
       id: "China",
-      title: "Life in Shanghai",
+      title: "Tickets to Shanghai",
       path: `${process.env.PUBLIC_URL}/sim/files/shanghai.html`,
     },
     {

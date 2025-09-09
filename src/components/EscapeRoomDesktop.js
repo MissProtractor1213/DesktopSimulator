@@ -132,13 +132,6 @@ function FileExplorer() {
         path: `${process.env.PUBLIC_URL}/sim/files/company-policy.pdf`,
       },
       {
-        name: "history-bank.html",
-        type: "html",
-        size: "2.4 KB",
-        modified: "Yesterday 5:48 PM",
-        path: `${process.env.PUBLIC_URL}/sim/files/history-bank.html`,
-      },
-      {
         name: "itinerary.html",
         type: "html",
         suspicious: false,

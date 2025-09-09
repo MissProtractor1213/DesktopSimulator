@@ -315,9 +315,14 @@ function BrowserApp() {
       path: `${process.env.PUBLIC_URL}/sim/files/shanghai.html`,
     },
     {
-      id: "Legal",
-      title: "Legal Consequences of Data Breaches",
-      path: `${process.env.PUBLIC_URL}/sim/files/legal.html`,
+      id: "Silly",
+      title: "The Parsnip: Latest News",
+      path: `${process.env.PUBLIC_URL}/sim/files/silly-news.html`,
+    },
+    {
+      id: "hack",
+      title: "Understanding Attack Techniques",
+      path: `${process.env.PUBLIC_URL}/sim/files/hacking-techniques.html`,
     },
   ];
   const [selected, setSelected] = useState(pages[0]);

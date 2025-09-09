@@ -142,7 +142,6 @@ function FileExplorer() {
       {
         name: "invoice.html",
         type: "html",
-        suspicious: true,
         size: "3.0 KB",
         modified: "Today 1:04 PM",
         path: `${process.env.PUBLIC_URL}/sim/files/invoice.html`,

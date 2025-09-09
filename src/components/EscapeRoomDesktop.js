@@ -305,9 +305,19 @@ function BrowserApp() {
       path: `${process.env.PUBLIC_URL}/sim/files/history-bank.html`,
     },
     {
-      id: "policy",
-      title: "Company Policy (PDF)",
-      path: `${process.env.PUBLIC_URL}/sim/files/company-policy.pdf`,
+      id: "evade",
+      title: "How to evade cybersecurity.",
+      path: `${process.env.PUBLIC_URL}/sim/files/evade-cyber.html`,
+    },
+    {
+      id: "China",
+      title: "Life in Shanghai",
+      path: `${process.env.PUBLIC_URL}/sim/files/shanghai.html`,
+    },
+    {
+      id: "Legal",
+      title: "Legal Consequences of Data Breaches",
+      path: `${process.env.PUBLIC_URL}/sim/files/legal.html`,
     },
   ];
   const [selected, setSelected] = useState(pages[0]);

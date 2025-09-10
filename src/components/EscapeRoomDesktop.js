@@ -122,7 +122,7 @@ function FileExplorer() {
         type: "pdf",
         size: "220 KB",
         modified: "Yesterday 4:02 PM",
-        path: `${process.env.PUBLIC_URL}/sim/files/company-policy.pdf`,
+        path: `${process.env.PUBLIC_URL}/sim/files/company-policy.html`,
       },
       {
         name: "TEAM-PHOTO.pdf",

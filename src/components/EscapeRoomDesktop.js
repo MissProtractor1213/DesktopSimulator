@@ -146,6 +146,13 @@ function FileExplorer() {
         modified: "Today 1:04 PM",
         path: `${process.env.PUBLIC_URL}/sim/files/invoice.html`,
       },
+      {
+        name: "secure_disposal.html",
+        type: "html",
+        size: "3.0 KB",
+        modified: "Today 1:04 PM",
+        path: `${process.env.PUBLIC_URL}/sim/files/secure-disposal.html`,
+      },
     ],
     []
   );

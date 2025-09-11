@@ -327,7 +327,7 @@ function BrowserApp() {
     {
       id: "disposal",
       title: "Proper and Secure Disposal",
-      path: `${process.env.PUBLIC_URL}/sim/files/secure-disposal.html`,
+      path: `${process.env.PUBLIC_URL}/sim/files/secure_disposal.html`,
     },
   ];
   const [selected, setSelected] = useState(pages[0]);

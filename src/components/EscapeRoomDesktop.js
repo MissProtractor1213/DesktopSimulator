@@ -329,6 +329,11 @@ function BrowserApp() {
       title: "Proper and Secure Disposal",
       path: `${process.env.PUBLIC_URL}/sim/files/secure_disposal.html`,
     },
+    {
+      id: "ehs",
+      title: "EHS × Cybersecurity: One Safety Program",
+      path: `${process.env.PUBLIC_URL}/sim/files/ehs_cyber.html`,
+    },
   ];
   const [selected, setSelected] = useState(pages[0]);
 

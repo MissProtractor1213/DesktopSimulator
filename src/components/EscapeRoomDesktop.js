@@ -146,13 +146,6 @@ function FileExplorer() {
         modified: "Today 1:04 PM",
         path: `${process.env.PUBLIC_URL}/sim/files/invoice.html`,
       },
-      {
-        name: "secure_disposal.html",
-        type: "html",
-        size: "3.0 KB",
-        modified: "Today 1:04 PM",
-        path: `${process.env.PUBLIC_URL}/sim/files/secure-disposal.html`,
-      },
     ],
     []
   );
@@ -330,6 +323,11 @@ function BrowserApp() {
       id: "hack",
       title: "Understanding Attack Techniques",
       path: `${process.env.PUBLIC_URL}/sim/files/hacking-techniques.html`,
+    },
+    {
+      id: "disposal",
+      title: "Proper and Secure Disposal",
+      path: `${process.env.PUBLIC_URL}/sim/files/secure-disposal.html`,
     },
   ];
   const [selected, setSelected] = useState(pages[0]);

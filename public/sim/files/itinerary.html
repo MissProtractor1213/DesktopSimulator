@@ -2,20 +2,268 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Travel Itinerary</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Trip Itinerary</title>
   <style>
-    body { font-family: Georgia, serif; padding: 1rem; }
-    table { border-collapse: collapse; width: 100%; margin-top: 1rem; }
-    th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: left; }
-    th { background: #f5f5f5; }
+    :root{
+      --ink:#0f172a;         /* slate-900 */
+      --muted:#475569;       /* slate-600 */
+      --brand:#2563eb;       /* blue-600 */
+      --bg:#f8fafc;          /* slate-50 */
+      --card:#ffffff;
+      --border:#e2e8f0;      /* slate-200 */
+      --accent:#16a34a;      /* green-600 */
+      --accent-2:#d97706;    /* amber-600 */
+      --accent-3:#dc2626;    /* red-600 */
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,sans-serif;line-height:1.6}
+    a{color:var(--brand);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:900px;margin:40px auto;padding:0 16px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+    header.hero{padding:28px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+    .badge{font-size:12px;border:1px solid var(--border);background:#f1f5f9;color:var(--muted);padding:4px 8px;border-radius:999px}
+    h1{font-size:28px;margin:0}
+    .sub{color:var(--muted);margin:2px 0 0 0}
+
+    /* Tabs (Days) */
+    .tabs{display:flex;gap:8px;padding:12px;border-bottom:1px solid var(--border);flex-wrap:wrap;background:#fbfdff}
+    .tab{appearance:none;border:1px solid var(--border);background:var(--card);padding:8px 12px;border-radius:10px;cursor:pointer;color:var(--muted);font-weight:600}
+    .tab[aria-selected="true"]{border-color:var(--brand);color:var(--brand);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+
+    /* Timeline */
+    .day{display:none;padding:22px}
+    .day[data-active="true"]{display:block}
+    .timeline{position:relative;margin:0;padding:0;list-style:none}
+    .timeline::before{content:"";position:absolute;left:24px;top:0;bottom:0;width:2px;background:var(--border)}
+    .item{display:grid;grid-template-columns:80px 1fr;gap:16px;padding:14px 0;position:relative}
+    .time{font-weight:700;color:var(--ink)}
+    .dot{position:absolute;left:17px;top:22px;width:14px;height:14px;background:var(--card);border:3px solid var(--brand);border-radius:999px}
+    .content{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px}
+    .title{margin:0 0 6px 0;font-size:16px}
+    .meta{font-size:14px;color:var(--muted);display:flex;flex-wrap:wrap;gap:10px}
+    .tag{font-size:12px;padding:3px 8px;border-radius:999px;border:1px solid var(--border);color:var(--muted)}
+    .tag.ok{border-color:#bbf7d0;background:#f0fdf4;color:var(--accent)}
+    .tag.warn{border-color:#fde68a;background:#fffbeb;color:var(--accent-2)}
+    .tag.crit{border-color:#fecaca;background:#fef2f2;color:var(--accent-3)}
+    .notes{margin-top:8px}
+
+    /* Footer / helpful links */
+    footer{padding:18px 24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+    .tiny{color:var(--muted);font-size:12px}
+
+    /* Print styles */
+    @media print{
+      body{background:#fff}
+      .wrap{margin:0;max-width:none}
+      .tabs, .badge-link{display:none!important}
+      .card{border:none;box-shadow:none}
+      a{color:inherit;text-decoration:none}
+    }
   </style>
 </head>
 <body>
-  <h2>✈️ Travel Itinerary</h2>
-  <p><strong>Passenger:</strong> Agent Red</p>
-  <table>
-    <tr><th>Flight</th><th>From</th><th>To</th><th>Date</th><th>Time</th></tr>
-    <tr><td>MU 768</td><td>San Francisco (SFO)</td><td>Shanghai (PVG)</td><td>11/12/2025</td><td>22:35</td></tr>
-  </table>
+  <div class="wrap">
+    <div class="card">
+      <header class="hero">
+        <div style="flex:1 1 auto;min-width:260px">
+          <h1>Team Offsite — Itinerary</h1>
+          <p class="sub">September 18–20, 2025 • Seattle, WA</p>
+          <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
+            <span class="badge">Version 1.0</span>
+            <span class="badge">Contact: travel@northbridge.example</span>
+          </div>
+        </div>
+        <div class="badge-link">
+          <!-- Optional: visible inside your simulator window; safe to remove -->
+          <a class="badge" href="#" onclick="window.print();return false;">Print</a>
+        </div>
+      </header>
+
+      <!-- Day tabs -->
+      <nav class="tabs" role="tablist" aria-label="Itinerary days">
+        <button class="tab" role="tab" aria-selected="true" aria-controls="day-1" id="tab-1">Day 1 • Thu 9/18</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="day-2" id="tab-2">Day 2 • Fri 9/19</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="day-3" id="tab-3">Day 3 • Sat 9/20</button>
+      </nav>
+
+      <!-- Day 1 -->
+      <section class="day" id="day-1" data-active="true" role="tabpanel" aria-labelledby="tab-1">
+        <ol class="timeline">
+          <li class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div class="time">08:00</div>
+            <div class="content">
+              <h3 class="title">Hotel Check-In & Luggage Drop</h3>
+              <div class="meta">
+                <span class="tag ok">Confirmed</span>
+                <span>Location: Harborview Hotel Lobby</span>
+                <span>Host: Front Desk</span>
+              </div>
+              <p class="notes">Early check-in available; store bags if rooms aren’t ready.</p>
+            </div>
+          </li>
+
+          <li class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div class="time">09:30</div>
+            <div class="content">
+              <h3 class="title">Welcome Briefing</h3>
+              <div class="meta">
+                <span class="tag">Casual</span>
+                <span>Location: Orca Ballroom A</span>
+                <span>Presenter: Security Team</span>
+              </div>
+              <p class="notes">Agenda overview, safety, and insider-threat training objectives.</p>
+            </div>
+          </li>
+
+          <li class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div class="time">12:00</div>
+            <div class="content">
+              <h3 class="title">Lunch Break</h3>
+              <div class="meta">
+                <span class="tag">On your own</span>
+                <span>Suggested: Pike Place Market</span>
+              </div>
+              <p class="notes">Per diem applies. Vegetarian and gluten-free options nearby.</p>
+            </div>
+          </li>
+
+          <li class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div class="time">14:00</div>
+            <div class="content">
+              <h3 class="title">Escape-Room Simulation (Insider Threat)</h3>
+              <div class="meta">
+                <span class="tag warn">Arrive 10 min early</span>
+                <span>Location: Breakout Lab 2</span>
+                <span>Facilitator: N. Nguyen</span>
+              </div>
+              <p class="notes">Bring your tablet; login code provided at the briefing.</p>
+            </div>
+          </li>
+
+          <li class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div class="time">18:30</div>
+            <div class="content">
+              <h3 class="title">Welcome Dinner</h3>
+              <div class="meta">
+                <span class="tag ok">Reservation</span>
+                <span>Location: The Boathouse</span>
+              </div>
+              <p class="notes">Business casual. Shuttle departs hotel at 18:00 sharp.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <!-- Day 2 -->
+      <section class="day" id="day-2" role="tabpanel" aria-labelledby="tab-2">
+        <ol class="timeline">
+          <li class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div class="time">08:30</div>
+            <div class="content">
+              <h3 class="title">Breakfast & Networking</h3>
+              <div class="meta">
+                <span class="tag">Buffet</span>
+                <span>Location: Orca Foyer</span>
+              </div>
+              <p class="notes">Grab coffee and meet your cross-functional partners.</p>
+            </div>
+          </li>
+
+          <li class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div class="time">10:00</div>
+            <div class="content">
+              <h3 class="title">Workshops (Pick One)</h3>
+              <div class="meta">
+                <span class="tag">Tracks A/B</span>
+                <span>Locations: Lab 1 & Lab 2</span>
+              </div>
+              <p class="notes">A: Splunk Dashboards • B: EHS & Waste Sorting for Offices</p>
+            </div>
+          </li>
+
+          <li class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div class="time">15:00</div>
+            <div class="content">
+              <h3 class="title">Team Challenge: Data Hunt</h3>
+              <div class="meta">
+                <span class="tag warn">Bring laptop</span>
+                <span>Location: Breakout Floor</span>
+              </div>
+              <p class="notes">Clues hidden in files, mail, and browser history.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <!-- Day 3 -->
+      <section class="day" id="day-3" role="tabpanel" aria-labelledby="tab-3">
+        <ol class="timeline">
+          <li class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div class="time">09:00</div>
+            <div class="content">
+              <h3 class="title">Retrospective & Awards</h3>
+              <div class="meta">
+                <span class="tag ok">Confirmed</span>
+                <span>Location: Orca Ballroom A</span>
+              </div>
+              <p class="notes">Share takeaways; recognize top sleuths.</p>
+            </div>
+          </li>
+
+          <li class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div class="time">11:30</div>
+            <div class="content">
+              <h3 class="title">Checkout & Departures</h3>
+              <div class="meta">
+                <span class="tag">Flexible</span>
+              </div>
+              <p class="notes">Return badges; airport shuttles run every 30 minutes.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <footer>
+        <span class="tiny">Need help? See the “Travel FAQ” document on the desktop.</span>
+        <span class="tiny">Last updated: Sep 12, 2025</span>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    // Simple, accessible tab switching
+    const tabs = Array.from(document.querySelectorAll('.tab'));
+    const days = Array.from(document.querySelectorAll('.day'));
+
+    function activate(i){
+      tabs.forEach((t,idx)=>{
+        t.setAttribute('aria-selected', String(idx===i));
+      });
+      days.forEach((d,idx)=>{
+        d.setAttribute('data-active', String(idx===i));
+      });
+    }
+
+    tabs.forEach((tab, i)=>{
+      tab.addEventListener('click', ()=>activate(i));
+      tab.addEventListener('keydown', (e)=>{
+        if(e.key==='ArrowRight'){ e.preventDefault(); tabs[(i+1)%tabs.length].focus(); }
+        if(e.key==='ArrowLeft'){ e.preventDefault(); tabs[(i-1+tabs.length)%tabs.length].focus(); }
+        if(e.key==='Enter' || e.key===' '){ e.preventDefault(); activate(i); }
+      });
+    });
+  </script>
 </body>
 </html>

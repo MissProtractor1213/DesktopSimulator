@@ -111,13 +111,6 @@ function FileExplorer() {
         path: `${process.env.PUBLIC_URL}/images/BUDGET-REPORT.png`,
       },
       {
-        name: "suspicious-email.html",
-        type: "html",
-        size: "3.1 KB",
-        modified: "Today 3:35 PM",
-        path: `${process.env.PUBLIC_URL}/sim/files/suspicious-email.html`,
-      },
-      {
         name: "company-policy.pdf",
         type: "pdf",
         size: "220 KB",

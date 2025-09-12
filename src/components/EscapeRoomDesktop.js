@@ -238,25 +238,29 @@ function MailApp() {
       id: 1,
       subject: "Invoice Reminder",
       from: "billing@vendor.com",
+      to: "agent@company.com",
       path: `${process.env.PUBLIC_URL}/sim/files/invoice.html`,
     },
     {
       id: 2,
       subject: "Travel Itinerary",
       from: "noreply@airline.com",
+      to: "agent@company.com",
       path: `${process.env.PUBLIC_URL}/sim/files/itinerary.html`,
     },
     {
       id: 3,
       subject: "Security Concern",
       from: "alerts@corp.com",
+      to: "agent@company.com",
       path: `${process.env.PUBLIC_URL}/sim/files/suspicious-email.html`,
     },
     {
       id: 4,
       subject: "Secret Code",
       from: "sus@corp.com",
-      path: `${process.env.PUBLIC_URL}/sim/files/suspicious-email2.html`,
+      to: "agent@company.com",
+      path: `${process.env.PUBLIC_URL}/sim/files/suspicious-emai2.html`,
     },
   ];
   const [selected, setSelected] = useState(emails[0]);

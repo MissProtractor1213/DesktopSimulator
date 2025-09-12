@@ -261,7 +261,22 @@ function MailApp() {
       from: "sus@corp.com",
       to: "agent@company.com",
       path: `${process.env.PUBLIC_URL}/sim/files/suspicious-email2.html`,
+    },  
+    {
+      id: 5,
+      subject: "[Ext] RE: Monthly Data Transfer",
+      from: "ops@prosperity-imports.cn",
+      to: "ared@northbridge.example",
+      path: `${process.env.PUBLIC_URL}/sim/files/email-data-transfer.html`,
     },
+    {
+      id: 2,
+      subject: "FWD: Team Photo (final)",
+      from: "ared@northbridge.example",
+      to: "ared.archive@proton.me",
+      path: `${process.env.PUBLIC_URL}/sim/files/email-team-attachment.html`,
+    },
+    
   ];
   const [selected, setSelected] = useState(emails[0]);
 

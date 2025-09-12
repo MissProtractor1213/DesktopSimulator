@@ -260,7 +260,7 @@ function MailApp() {
       subject: "Secret Code",
       from: "sus@corp.com",
       to: "agent@company.com",
-      path: `${process.env.PUBLIC_URL}/sim/files/suspicious-emai2.html`,
+      path: `${process.env.PUBLIC_URL}/sim/files/suspicious-email2.html`,
     },
   ];
   const [selected, setSelected] = useState(emails[0]);

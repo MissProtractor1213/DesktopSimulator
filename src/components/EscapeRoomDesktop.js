@@ -125,7 +125,7 @@ function FileExplorer() {
         path: `${process.env.PUBLIC_URL}/images/TEAM-PHOTO.png`,
       },
       {
-        name: "itinerary.html",
+        name: "itinerary.doc",
         type: "html",
         suspicious: false,
         size: "4.7 KB",
@@ -133,7 +133,7 @@ function FileExplorer() {
         path: `${process.env.PUBLIC_URL}/sim/files/itinerary.html`,
       },
       {
-        name: "invoice.html",
+        name: "invoice.doc",
         type: "html",
         size: "3.0 KB",
         modified: "Today 1:04 PM",

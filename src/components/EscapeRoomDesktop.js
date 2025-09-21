@@ -461,7 +461,7 @@ export default function EscapeRoomDesktop() {
 
             {/* Optional: remove in production */}
             <div className="mt-3 text-xs text-gray-600 text-center">
-              Hint: "Look at the sticky notes"
+              Hint: "Some notes stick more than others. Turn over what's written to find what's hidden."
             </div>
           </div>
         </div>

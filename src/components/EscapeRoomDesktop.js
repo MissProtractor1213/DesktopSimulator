@@ -139,6 +139,26 @@ function FileExplorer() {
         modified: "Today 1:04 PM",
         path: `${process.env.PUBLIC_URL}/sim/files/invoice.html`,
       },
+       {
+        name: "budget_summary.doc",
+        type: "html",
+        size: "3.0 KB",
+        modified: "Today 1:00 AM",
+        path: `${process.env.PUBLIC_URL}/sim/files/budget_summary.html`,
+      },
+       {
+        name: "budget_summary.doc",
+        type: "html",
+        size: "3.0 KB",
+        modified: "Today 1:00 AM",
+        path: `${process.env.PUBLIC_URL}/sim/files/budget_summary.html`,
+      },{
+        name: "bom_detailed.doc",
+        type: "html",
+        size: "3.0 KB",
+        modified: "Today 2:00 PM",
+        path: `${process.env.PUBLIC_URL}/sim/files/bom_detailed.html`,
+      },
     ],
     []
   );

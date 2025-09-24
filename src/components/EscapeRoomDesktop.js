@@ -122,7 +122,7 @@ function FileExplorer() {
         type: "image",
         size: "1.2 MB",
         modified: "Today 3:10 PM",
-        path: `${process.env.PUBLIC_URL}/images/TEAM-PHOTO.png`,
+        path: `${process.env.PUBLIC_URL}/images/wafer-recipe.html`,
       },
       {
         name: "itinerary.doc",

@@ -146,13 +146,7 @@ function FileExplorer() {
         modified: "Today 1:00 AM",
         path: `${process.env.PUBLIC_URL}/sim/files/budget_summary.html`,
       },
-       {
-        name: "budget_summary.doc",
-        type: "html",
-        size: "3.0 KB",
-        modified: "Today 1:00 AM",
-        path: `${process.env.PUBLIC_URL}/sim/files/budget_summary.html`,
-      },{
+     {
         name: "bom_detailed.doc",
         type: "html",
         size: "3.0 KB",

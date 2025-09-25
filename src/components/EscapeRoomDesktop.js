@@ -372,7 +372,15 @@ function BrowserApp() {
               selected?.id === p.id ? "bg-black/5" : "hover:bg-black/5"
             }`}
           >
-            <div className="text-sm text-gray-800">{p.title}</div>
+            <div 
+              className={
+                p.title === "Proper and Secure Disposal"
+                ? "text-sm font-medium text-red-600"
+                : "text-sm text-gray-800"
+              }
+            >
+             {p.title}
+            </div>
           </div>
         ))}
       </aside>

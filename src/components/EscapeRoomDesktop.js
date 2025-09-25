@@ -278,13 +278,6 @@ function MailApp() {
       to: "ared@northbridge.example",
       path: `${process.env.PUBLIC_URL}/sim/files/email-data-transfer.html`,
     },
-    {
-      id: 2,
-      subject: "FWD: Team Photo (final)",
-      from: "employee@company.com",
-      to: "sus@corp.com",
-      path: `${process.env.PUBLIC_URL}/sim/files/email-team-attachment.html`,
-    },
     
   ];
   const [selected, setSelected] = useState(emails[0]);

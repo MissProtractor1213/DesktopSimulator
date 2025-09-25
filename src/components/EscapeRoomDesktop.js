@@ -132,14 +132,14 @@ function FileExplorer() {
         modified: "Today 1:04 PM",
         path: `${process.env.PUBLIC_URL}/sim/files/invoice.html`,
       },
-       {
+      {
         name: "budget_summary.doc",
         type: "html",
         size: "3.0 KB",
         modified: "Today 1:00 AM",
         path: `${process.env.PUBLIC_URL}/sim/files/budget_summary.html`,
       },
-     {
+      {
         name: "bom_detailed.doc",
         type: "html",
         size: "3.0 KB",
@@ -210,6 +210,7 @@ function FileExplorer() {
                 {iconFor(f.type)}
                 <div className="flex-1">
                   <div className="text-sm font-medium">
+                    {/* 🔴 Only TEAM-PHOTO.pdf is red */}
                     <span className={f.name === "TEAM-PHOTO.pdf" ? "text-red-600" : "text-gray-800"}>
                       {f.name}
                     </span>
@@ -218,7 +219,7 @@ function FileExplorer() {
                         suspicious
                       </span>
                     )}
-                    </div>
+                  </div>
                   <div className="text-[11px] text-gray-500">
                     {f.type} • {f.size} • {f.modified}
                   </div>
@@ -270,7 +271,7 @@ function MailApp() {
       from: "sus@corp.com",
       to: "employee@company.com",
       path: `${process.env.PUBLIC_URL}/sim/files/suspicious-email2.html`,
-    },  
+    },
     {
       id: 5,
       subject: "[Ext] RE: Monthly Data Transfer",
@@ -278,7 +279,6 @@ function MailApp() {
       to: "ared@northbridge.example",
       path: `${process.env.PUBLIC_URL}/sim/files/email-data-transfer.html`,
     },
-    
   ];
   const [selected, setSelected] = useState(emails[0]);
 
@@ -294,15 +294,17 @@ function MailApp() {
               selected?.id === e.id ? "bg-black/5" : "hover:bg-black/5"
             }`}
           >
+            {/* 🔴 Only "Security Concern" is red */}
             <div
               className={
                 e.subject === "Security Concern"
-                ? "font-medium text-red-600"
-                : "font-medium text-gray-800"
+                  ? "font-medium text-red-600"
+                  : "font-medium text-gray-800"
               }
-             >
+            >
               {e.subject}
             </div>
+            <div className="text-xs text-gray-500">{e.from}</div>
           </div>
         ))}
       </aside>
@@ -413,7 +415,6 @@ export default function EscapeRoomDesktop() {
   // --- LOGIN SCREEN (centered card; fullscreen top-right) ---
   if (!hasUnlocked) {
     return (
-      // CHANGED: min-h-screen -> h-screen to give child a definite height
       <div className={`h-screen ${WALLPAPER} relative`}>
         {/* Fullscreen button at top-right */}
         <button
@@ -426,7 +427,7 @@ export default function EscapeRoomDesktop() {
 
         <div className="absolute inset-0 backdrop-blur-sm" />
 
-        {/* CHANGED: make this container fill the viewport and center */}
+        {/* Centered login card */}
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="bg-white/80 backdrop-blur-xl border border-white/60 rounded-2xl p-6 w-[360px] shadow-2xl">
             {/* Clock + Date */}

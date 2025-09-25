@@ -303,6 +303,7 @@ function MailApp() {
              >
               {e.subject}
             </div>
+          </div>
         ))}
       </aside>
       <section className="flex-1 min-h-0 bg-white">

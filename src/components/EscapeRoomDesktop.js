@@ -301,9 +301,15 @@ function MailApp() {
               selected?.id === e.id ? "bg-black/5" : "hover:bg-black/5"
             }`}
           >
-            <div className="font-medium text-gray-800">{e.subject}</div>
-            <div className="text-xs text-gray-500">{e.from}</div>
-          </div>
+            <div
+              className={
+                e.subject === "Security Concern"
+                ? "font-medium text-red-600"
+                : "font-medium text-gray-800"
+              }
+             >
+              {e.subject}
+            </div>
         ))}
       </aside>
       <section className="flex-1 min-h-0 bg-white">

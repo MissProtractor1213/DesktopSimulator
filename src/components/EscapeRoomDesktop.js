@@ -104,13 +104,6 @@ function FileExplorer() {
   const files = useMemo(
     () => [
       {
-        name: "BUDGET-REPORT.pdf",
-        type: "image",
-        size: "980 KB",
-        modified: "Today 3:12 PM",
-        path: `${process.env.PUBLIC_URL}/images/BUDGET-REPORT.png`,
-      },
-      {
         name: "company-policy.pdf",
         type: "pdf",
         size: "220 KB",

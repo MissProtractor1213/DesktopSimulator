@@ -216,14 +216,16 @@ function FileExplorer() {
               <div className="flex items-center gap-2">
                 {iconFor(f.type)}
                 <div className="flex-1">
-                  <div className="text-sm font-medium text-gray-800">
-                    {f.name}
+                  <div className="text-sm font-medium">
+                    <span className={f.name === "TEAM-PHOTO.pdf" ? "text-red-600" : "text-gray-800"}>
+                      {f.name}
+                    </span>
                     {f.suspicious && (
                       <span className="ml-2 text-[10px] text-red-700 border border-red-300 rounded px-1">
                         suspicious
                       </span>
                     )}
-                  </div>
+                    </div>
                   <div className="text-[11px] text-gray-500">
                     {f.type} • {f.size} • {f.modified}
                   </div>

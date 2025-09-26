@@ -12,6 +12,8 @@ import {
   Image as ImageIcon,
   FileSpreadsheet,
   Search,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import useFullscreen from "../hooks/useFullscreen";
 
@@ -372,14 +374,14 @@ function BrowserApp() {
               selected?.id === p.id ? "bg-black/5" : "hover:bg-black/5"
             }`}
           >
-            <div 
+            <div
               className={
                 p.title === "Proper and Secure Disposal"
-                ? "text-sm font-medium text-red-600"
-                : "text-sm text-gray-800"
+                  ? "text-sm font-medium text-red-600"
+                  : "text-sm text-gray-800"
               }
             >
-             {p.title}
+              {p.title}
             </div>
           </div>
         ))}
@@ -401,6 +403,7 @@ export default function EscapeRoomDesktop() {
   // ---- LOGIN / CLOCK STATE ----
   const [hasUnlocked, setHasUnlocked] = useState(false);
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // 👈 NEW: reveal/hide toggle
   const correctPassword = "Noodles2016"; // change to your puzzle password
 
   // Live clock
@@ -458,17 +461,30 @@ export default function EscapeRoomDesktop() {
               <div className="text-sm text-gray-500">Sign in</div>
             </div>
 
-            {/* Password */}
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              onKeyDown={(e) =>
-                e.key === "Enter" && password === correctPassword && setHasUnlocked(true)
-              }
-              className="w-full px-3 py-2 rounded-lg border border-gray-300 outline-none focus:ring-2 focus:ring-blue-400"
-            />
+            {/* Password with reveal toggle */}
+            <div className="w-full relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                onKeyDown={(e) =>
+                  e.key === "Enter" && password === correctPassword && setHasUnlocked(true)
+                }
+                className="w-full px-3 pr-10 py-2 rounded-lg border border-gray-300 outline-none focus:ring-2 focus:ring-blue-400"
+                aria-label="Password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((s) => !s)}
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-md hover:bg-black/5"
+                aria-pressed={showPassword}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                title={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
 
             <button
               onClick={() => password === correctPassword && setHasUnlocked(true)}

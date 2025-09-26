@@ -498,7 +498,7 @@ export default function EscapeRoomDesktop() {
             </button>
 
             {/* Optional hint */}
-            <div className="mt-4 text-lg sm:text-base text-gray-800 text-center">
+            <div className="mt-4 text-lg sm:text-xl text-gray-800 text-center font-medium">
               Hint: "Some notes stick more than others."
             </div>
           </div>

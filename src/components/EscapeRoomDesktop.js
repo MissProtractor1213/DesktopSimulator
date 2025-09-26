@@ -401,7 +401,7 @@ export default function EscapeRoomDesktop() {
   // ---- LOGIN / CLOCK STATE ----
   const [hasUnlocked, setHasUnlocked] = useState(false);
   const [password, setPassword] = useState("");
-  const correctPassword = "letmein"; // change to your puzzle password
+  const correctPassword = "Fluffy2016"; // change to your puzzle password
 
   // Live clock
   const [now, setNow] = useState(() => new Date());

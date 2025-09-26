@@ -32,7 +32,7 @@ import useFullscreen from "../hooks/useFullscreen";
 const WALLPAPER = "bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500";
 
 /* Simple Windows logo */
-function WindowsLogo({ className = "w-5 h-5" }) {
+function WindowsLogo({ className = "w-7 h-7" }) {
   return (
     <svg viewBox="0 0 256 256" className={className} aria-hidden="true">
       <rect x="16" y="16" width="104" height="104" fill="currentColor" />
@@ -45,33 +45,33 @@ function WindowsLogo({ className = "w-5 h-5" }) {
 
 function WindowFrame({ title, icon, onClose, onMinimize, onMaximize, children }) {
   return (
-    <div className="fixed inset-10 bg-white/95 rounded-2xl shadow-2xl border border-white/60 backdrop-blur-xl flex flex-col z-30 overflow-hidden">
-      <div className="px-3 py-2 border-b border-white/50 bg-white/60 backdrop-blur-lg flex items-center justify-between select-none">
-        <div className="flex items-center gap-2">
+    <div className="fixed inset-6 sm:inset-8 md:inset-10 bg-white/95 rounded-3xl shadow-2xl border border-white/60 backdrop-blur-xl flex flex-col z-30 overflow-hidden">
+      <div className="px-4 py-3 border-b border-white/50 bg-white/70 backdrop-blur-lg flex items-center justify-between select-none">
+        <div className="flex items-center gap-3">
           {icon}
-          <span className="text-sm font-medium text-gray-800">{title}</span>
+          <span className="text-lg font-semibold text-gray-800">{title}</span>
         </div>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-2">
           <button
             onClick={onMinimize}
-            className="w-8 h-8 rounded-md hover:bg-black/5 flex items-center justify-center text-gray-700"
+            className="w-11 h-11 rounded-lg hover:bg-black/5 flex items-center justify-center text-gray-700"
             title="Minimize"
           >
-            <Minus size={16} />
+            <Minus size={20} />
           </button>
           <button
             onClick={onMaximize}
-            className="w-8 h-8 rounded-md hover:bg-black/5 flex items-center justify-center text-gray-700"
+            className="w-11 h-11 rounded-lg hover:bg-black/5 flex items-center justify-center text-gray-700"
             title="Maximize"
           >
-            <Square size={14} />
+            <Square size={18} />
           </button>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-md bg-red-500 hover:bg-red-600 flex items-center justify-center text-white"
+            className="w-11 h-11 rounded-lg bg-red-500 hover:bg-red-600 flex items-center justify-center text-white"
             title="Close"
           >
-            <X size={16} />
+            <X size={20} />
           </button>
         </div>
       </div>
@@ -83,7 +83,7 @@ function WindowFrame({ title, icon, onClose, onMinimize, onMaximize, children })
 function IFrameViewer({ src, title }) {
   if (!src) {
     return (
-      <div className="h-full w-full grid place-items-center text-sm text-gray-600">
+      <div className="h-full w-full grid place-items-center text-base sm:text-lg text-gray-700 p-6">
         No file path provided. Add <code>path</code> for in-tab preview.
       </div>
     );
@@ -153,10 +153,10 @@ function FileExplorer() {
   );
 
   const iconFor = (type) => {
-    if (type === "image") return <ImageIcon size={16} className="text-pink-500" />;
-    if (type === "pdf") return <FileText size={16} className="text-red-500" />;
-    if (type === "sheet") return <FileSpreadsheet size={16} className="text-green-600" />;
-    return <FileText size={16} className="text-blue-600" />;
+    if (type === "image") return <ImageIcon size={22} className="text-pink-500" />;
+    if (type === "pdf") return <FileText size={22} className="text-red-500" />;
+    if (type === "sheet") return <FileSpreadsheet size={22} className="text-green-600" />;
+    return <FileText size={22} className="text-blue-600" />;
   };
 
   const renderPreview = (file) => {
@@ -168,61 +168,61 @@ function FileExplorer() {
           <img src={path} alt={name} className="max-w-full max-h-full object-contain" />
         </div>
       );
-    return <div className="p-4 text-sm text-gray-700">No preview available.</div>;
+    return <div className="p-5 text-base text-gray-700">No preview available.</div>;
   };
 
   return (
     <div className="h-full flex min-h-0">
-      <aside className="w-72 border-r border-white/50 bg-white/60 backdrop-blur-md p-3 overflow-auto">
+      <aside className="w-88 sm:w-96 border-r border-white/50 bg-white/60 backdrop-blur-md p-4 overflow-auto">
         <div className="flex items-center justify-between">
-          <h3 className="font-semibold text-gray-800">Documents</h3>
-          <span className="text-sm text-gray-500">{files.length}</span>
+          <h3 className="font-bold text-gray-800 text-xl">Documents</h3>
+          <span className="text-base text-gray-600">{files.length}</span>
         </div>
-        <div className="flex items-center gap-1 mt-1">
+        <div className="flex items-center gap-2 mt-2">
           <button
             onClick={() => setViewMode("grid")}
-            className={`p-1 rounded ${
-              viewMode === "grid" ? "bg-blue-100 text-blue-600" : "text-gray-600 hover:bg-black/5"
+            className={`px-2 py-2 rounded-lg ${
+              viewMode === "grid" ? "bg-blue-100 text-blue-700" : "text-gray-700 hover:bg-black/5"
             }`}
             title="Grid view"
           >
-            <Grid size={16} />
+            <Grid size={20} />
           </button>
           <button
             onClick={() => setViewMode("list")}
-            className={`p-1 rounded ${
-              viewMode === "list" ? "bg-blue-100 text-blue-600" : "text-gray-600 hover:bg-black/5"
+            className={`px-2 py-2 rounded-lg ${
+              viewMode === "list" ? "bg-blue-100 text-blue-700" : "text-gray-700 hover:bg-black/5"
             }`}
             title="List view"
           >
-            <List size={16} />
+            <List size={20} />
           </button>
         </div>
 
-        <div className="mt-2 space-y-1">
+        <div className="mt-3 space-y-2">
           {files.map((f) => (
             <button
               key={f.name}
               onClick={() => setSelected(f)}
-              className={`w-full text-left px-2 py-2 rounded hover:bg-black/5 ${
+              className={`w-full text-left px-3 py-3 rounded-xl hover:bg-black/5 ${
                 selected?.name === f.name ? "bg-black/5" : ""
               }`}
             >
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 {iconFor(f.type)}
                 <div className="flex-1">
-                  <div className="text-sm font-medium">
+                  <div className="text-lg font-semibold">
                     {/* 🔴 Only TEAM-PHOTO.pdf is red */}
-                    <span className={f.name === "TEAM-PHOTO.pdf" ? "text-red-600" : "text-gray-800"}>
+                    <span className={f.name === "TEAM-PHOTO.pdf" ? "text-red-600" : "text-gray-900"}>
                       {f.name}
                     </span>
                     {f.suspicious && (
-                      <span className="ml-2 text-[10px] text-red-700 border border-red-300 rounded px-1">
+                      <span className="ml-2 text-[11px] text-red-700 border border-red-300 rounded px-1">
                         suspicious
                       </span>
                     )}
                   </div>
-                  <div className="text-[11px] text-gray-500">
+                  <div className="text-sm text-gray-600">
                     {f.type} • {f.size} • {f.modified}
                   </div>
                 </div>
@@ -236,7 +236,7 @@ function FileExplorer() {
         {selected ? (
           <div className="w-full h-full">{renderPreview(selected)}</div>
         ) : (
-          <div className="h-full grid place-items-center text-gray-500">Select a file to preview.</div>
+          <div className="h-full grid place-items-center text-gray-600 text-lg">Select a file to preview.</div>
         )}
       </section>
     </div>
@@ -286,13 +286,13 @@ function MailApp() {
 
   return (
     <div className="h-full flex min-h-0">
-      <aside className="w-80 border-r border-white/50 bg-white/60 backdrop-blur-md overflow-auto">
-        <h3 className="px-3 py-2 font-semibold text-gray-800">Inbox</h3>
+      <aside className="w-88 sm:w-96 border-r border-white/50 bg-white/60 backdrop-blur-md overflow-auto">
+        <h3 className="px-4 py-3 font-bold text-gray-800 text-xl">Inbox</h3>
         {emails.map((e) => (
           <div
             key={e.id}
             onClick={() => setSelected(e)}
-            className={`px-3 py-2 cursor-pointer border-b border-white/50 ${
+            className={`px-4 py-3 cursor-pointer border-b border-white/50 ${
               selected?.id === e.id ? "bg-black/5" : "hover:bg-black/5"
             }`}
           >
@@ -300,13 +300,13 @@ function MailApp() {
             <div
               className={
                 e.subject === "Security Concern"
-                  ? "font-medium text-red-600"
-                  : "font-medium text-gray-800"
+                  ? "font-semibold text-red-600 text-lg"
+                  : "font-semibold text-gray-900 text-lg"
               }
             >
               {e.subject}
             </div>
-            <div className="text-xs text-gray-500">{e.from}</div>
+            <div className="text-sm text-gray-600">{e.from}</div>
           </div>
         ))}
       </aside>
@@ -314,7 +314,7 @@ function MailApp() {
         {selected ? (
           <IFrameViewer src={selected.path} title={selected.subject} />
         ) : (
-          <div className="h-full grid place-items-center text-gray-500">Select an email.</div>
+          <div className="h-full grid place-items-center text-gray-600 text-lg">Select an email.</div>
         )}
       </section>
     </div>
@@ -364,21 +364,21 @@ function BrowserApp() {
 
   return (
     <div className="h-full flex min-h-0">
-      <aside className="w-80 border-r border-white/50 bg-white/60 backdrop-blur-md overflow-auto">
-        <h3 className="px-3 py-2 font-semibold text-gray-800">Recent</h3>
+      <aside className="w-88 sm:w-96 border-r border-white/50 bg-white/60 backdrop-blur-md overflow-auto">
+        <h3 className="px-4 py-3 font-bold text-gray-800 text-xl">Recent</h3>
         {pages.map((p) => (
           <div
             key={p.id}
             onClick={() => setSelected(p)}
-            className={`px-3 py-2 cursor-pointer border-b border-white/50 ${
+            className={`px-4 py-3 cursor-pointer border-b border-white/50 ${
               selected?.id === p.id ? "bg-black/5" : "hover:bg-black/5"
             }`}
           >
             <div
               className={
                 p.title === "Proper and Secure Disposal"
-                  ? "text-sm font-medium text-red-600"
-                  : "text-sm text-gray-800"
+                  ? "text-base sm:text-lg font-semibold text-red-600"
+                  : "text-base sm:text-lg text-gray-900"
               }
             >
               {p.title}
@@ -390,7 +390,7 @@ function BrowserApp() {
         {selected ? (
           <IFrameViewer src={selected.path} title={selected.title} />
         ) : (
-          <div className="h-full grid place-items-center text-gray-500">Select a page.</div>
+          <div className="h-full grid place-items-center text-gray-600 text-lg">Select a page.</div>
         )}
       </section>
     </div>
@@ -403,7 +403,7 @@ export default function EscapeRoomDesktop() {
   // ---- LOGIN / CLOCK STATE ----
   const [hasUnlocked, setHasUnlocked] = useState(false);
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // 👈 NEW: reveal/hide toggle
+  const [showPassword, setShowPassword] = useState(false); // reveal/hide toggle
   const correctPassword = "Noodles2016"; // change to your puzzle password
 
   // Live clock
@@ -423,14 +423,14 @@ export default function EscapeRoomDesktop() {
   const [open, setOpen] = useState({ files: false, mail: false, browser: false });
   const [minimized, setMinimized] = useState({ files: false, mail: false, browser: false });
 
-  // --- LOGIN SCREEN (centered card; fullscreen top-right) ---
+  // --- LOGIN SCREEN ---
   if (!hasUnlocked) {
     return (
-      <div className={`h-screen ${WALLPAPER} relative`}>
+      <div className={`h-screen ${WALLPAPER} relative text-[18px] sm:text-[20px]`}>
         {/* Fullscreen button at top-right */}
         <button
           onClick={toggleFullscreen}
-          className="absolute top-3 right-3 z-50 px-3 py-1.5 text-xs rounded-xl bg-white/25 hover:bg-white/35 text-white backdrop-blur"
+          className="absolute top-4 right-4 z-50 px-4 py-2 text-sm sm:text-base rounded-2xl bg-white/30 hover:bg-white/40 text-white backdrop-blur"
           title="Toggle Fullscreen"
         >
           Fullscreen
@@ -439,62 +439,66 @@ export default function EscapeRoomDesktop() {
         <div className="absolute inset-0 backdrop-blur-sm" />
 
         {/* Centered login card */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="bg-white/80 backdrop-blur-xl border border-white/60 rounded-2xl p-6 w-[360px] shadow-2xl">
+        <div className="absolute inset-0 flex items-center justify-center px-4">
+          <div className="bg-white/85 backdrop-blur-xl border border-white/60 rounded-3xl p-7 w-[420px] sm:w-[480px] shadow-2xl">
             {/* Clock + Date */}
-            <div className="text-center mb-4">
-              <div className="text-5xl font-light text-gray-900">{timeStr}</div>
-              <div className="text-sm text-gray-600">{dateStr}</div>
+            <div className="text-center mb-5">
+              <div className="text-6xl sm:text-7xl font-light text-gray-900">{timeStr}</div>
+              <div className="text-base sm:text-lg text-gray-700">{dateStr}</div>
             </div>
 
             {/* Avatar + User */}
-            <div className="flex flex-col items-center mb-3">
+            <div className="flex flex-col items-center mb-4">
               <img
                 src={`${process.env.PUBLIC_URL}/images/avatar.png`}
                 alt="User avatar"
-                className="w-16 h-16 rounded-full object-cover border border-white/70 shadow"
+                className="w-20 h-20 rounded-full object-cover border border-white/70 shadow"
                 onError={(e) => {
                   e.currentTarget.style.display = "none";
                 }}
               />
-              <div className="text-lg font-semibold text-gray-800 mt-2">User</div>
-              <div className="text-sm text-gray-500">Sign in</div>
+              <div className="text-xl font-bold text-gray-800 mt-2">User</div>
+              <div className="text-base text-gray-600">Sign in</div>
             </div>
 
             {/* Password with reveal toggle */}
+            <label className="block text-gray-800 font-medium mb-1" htmlFor="password">
+              Password
+            </label>
             <div className="w-full relative">
               <input
+                id="password"
                 type={showPassword ? "text" : "password"}
-                placeholder="Password"
+                placeholder="Enter password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 onKeyDown={(e) =>
                   e.key === "Enter" && password === correctPassword && setHasUnlocked(true)
                 }
-                className="w-full px-3 pr-10 py-2 rounded-lg border border-gray-300 outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full px-4 pr-12 py-3 rounded-xl border border-gray-300 outline-none focus:ring-2 focus:ring-blue-400 text-[18px] sm:text-[20px]"
                 aria-label="Password"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword((s) => !s)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-md hover:bg-black/5"
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-lg hover:bg-black/5"
                 aria-pressed={showPassword}
                 aria-label={showPassword ? "Hide password" : "Show password"}
                 title={showPassword ? "Hide password" : "Show password"}
               >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                {showPassword ? <EyeOff size={22} /> : <Eye size={22} />}
               </button>
             </div>
 
             <button
               onClick={() => password === correctPassword && setHasUnlocked(true)}
-              className="mt-3 w-full px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium"
+              className="mt-4 w-full px-4 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg"
             >
               Sign in
             </button>
 
-            {/* Optional: remove in production */}
-            <div className="mt-3 text-xs text-gray-600 text-center">
+            {/* Optional hint */}
+            <div className="mt-4 text-sm sm:text-base text-gray-700 text-center">
               Hint: "Some notes stick more than others."
             </div>
           </div>
@@ -512,94 +516,94 @@ export default function EscapeRoomDesktop() {
   const minimize = (key) => setMinimized((m) => ({ ...m, [key]: !m[key] }));
 
   return (
-    <div className={`min-h-screen ${WALLPAPER} relative overflow-hidden`}>
-      {/* DESKTOP ICONS (left side column) */}
-      <div className="absolute top-8 left-8 space-y-6 z-10">
+    <div className={`min-h-screen ${WALLPAPER} relative overflow-hidden text-[18px] sm:text-[20px]`}>
+      {/* DESKTOP ICONS */}
+      <div className="absolute top-8 left-8 space-y-7 z-10">
         <button
           onClick={() => launch("files")}
-          className="flex flex-col items-center text-white/90 hover:text-white"
+          className="flex flex-col items-center text-white hover:text-white"
           title="File Explorer"
         >
-          <div className="w-14 h-14 grid place-items-center bg-white/30 backdrop-blur rounded-2xl shadow">
-            <Folder />
+          <div className="w-20 h-20 grid place-items-center bg-white/30 backdrop-blur rounded-3xl shadow">
+            <Folder size={30} />
           </div>
-          <span className="text-[11px] mt-1">Files</span>
+          <span className="text-sm mt-2">Files</span>
         </button>
         <button
           onClick={() => launch("mail")}
-          className="flex flex-col items-center text-white/90 hover:text-white"
+          className="flex flex-col items-center text-white hover:text-white"
           title="Mail"
         >
-          <div className="w-14 h-14 grid place-items-center bg-white/30 backdrop-blur rounded-2xl shadow">
-            <Mail />
+          <div className="w-20 h-20 grid place-items-center bg-white/30 backdrop-blur rounded-3xl shadow">
+            <Mail size={30} />
           </div>
-          <span className="text-[11px] mt-1">Mail</span>
+          <span className="text-sm mt-2">Mail</span>
         </button>
         <button
           onClick={() => launch("browser")}
-          className="flex flex-col items-center text-white/90 hover:text-white"
+          className="flex flex-col items-center text-white hover:text-white"
           title="Browser"
         >
-          <div className="w-14 h-14 grid place-items-center bg-white/30 backdrop-blur rounded-2xl shadow">
-            <Globe />
+          <div className="w-20 h-20 grid place-items-center bg-white/30 backdrop-blur rounded-3xl shadow">
+            <Globe size={30} />
           </div>
-          <span className="text-[11px] mt-1">Browser</span>
+          <span className="text-sm mt-2">Browser</span>
         </button>
       </div>
 
-      {/* WINDOWS-LIKE TASKBAR (bottom, left-aligned) */}
-      <div className="fixed left-0 right-0 bottom-0 h-12 bg-black/35 text-white backdrop-blur-xl shadow-2xl flex items-center px-2 gap-2">
+      {/* TASKBAR */}
+      <div className="fixed left-0 right-0 bottom-0 h-16 bg-black/40 text-white backdrop-blur-xl shadow-2xl flex items-center px-3 gap-3">
         {/* Start */}
         <button
           onClick={() => {}}
-          className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/15"
+          className="flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-white/15"
           title="Start"
         >
-          <WindowsLogo className="w-5 h-5" />
-          <span className="hidden sm:inline text-sm">Start</span>
+          <WindowsLogo className="w-7 h-7" />
+          <span className="hidden sm:inline text-base">Start</span>
         </button>
 
         {/* Search */}
-        <div className="hidden sm:flex items-center gap-2 flex-1 max-w-xl bg-white/15 rounded-lg px-3 py-1.5">
-          <Search size={16} />
+        <div className="hidden sm:flex items-center gap-3 flex-1 max-w-2xl bg-white/15 rounded-xl px-4 py-2.5">
+          <Search size={20} />
           <input
-            className="bg-transparent outline-none text-sm placeholder-white/70 w-full"
+            className="bg-transparent outline-none text-base placeholder-white/80 w-full"
             placeholder="Type here to search"
             onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
           />
         </div>
 
         {/* Pinned apps */}
-        <div className="flex items-center gap-1 ml-auto sm:ml-2">
+        <div className="flex items-center gap-2 ml-auto sm:ml-3">
           <button
             onClick={() => {
               setOpen((o) => ({ ...o, files: true }));
               setMinimized((m) => ({ ...m, files: false }));
             }}
-            className={`px-3 py-2 rounded-lg ${open.files ? "bg-white/25" : "hover:bg-white/15"}`}
+            className={`px-4 py-2.5 rounded-xl ${open.files ? "bg-white/25" : "hover:bg-white/15"}`}
             title="File Explorer"
           >
-            <Folder />
+            <Folder size={24} />
           </button>
           <button
             onClick={() => {
               setOpen((o) => ({ ...o, mail: true }));
               setMinimized((m) => ({ ...m, mail: false }));
             }}
-            className={`px-3 py-2 rounded-lg ${open.mail ? "bg-white/25" : "hover:bg-white/15"}`}
+            className={`px-4 py-2.5 rounded-xl ${open.mail ? "bg-white/25" : "hover:bg-white/15"}`}
             title="Mail"
           >
-            <Mail />
+            <Mail size={24} />
           </button>
           <button
             onClick={() => {
               setOpen((o) => ({ ...o, browser: true }));
               setMinimized((m) => ({ ...m, browser: false }));
             }}
-            className={`px-3 py-2 rounded-lg ${open.browser ? "bg-white/25" : "hover:bg-white/15"}`}
+            className={`px-4 py-2.5 rounded-xl ${open.browser ? "bg-white/25" : "hover:bg-white/15"}`}
             title="Browser"
           >
-            <Globe />
+            <Globe size={24} />
           </button>
         </div>
       </div>
@@ -608,7 +612,7 @@ export default function EscapeRoomDesktop() {
       {open.files && !minimized.files && (
         <WindowFrame
           title="File Explorer"
-          icon={<Folder size={16} className="text-orange-500" />}
+          icon={<Folder size={22} className="text-orange-500" />}
           onClose={() => close("files")}
           onMinimize={() => minimize("files")}
           onMaximize={() => {}}
@@ -620,7 +624,7 @@ export default function EscapeRoomDesktop() {
       {open.mail && !minimized.mail && (
         <WindowFrame
           title="Mail"
-          icon={<Mail size={16} className="text-blue-600" />}
+          icon={<Mail size={22} className="text-blue-600" />}
           onClose={() => close("mail")}
           onMinimize={() => minimize("mail")}
           onMaximize={() => {}}
@@ -632,7 +636,7 @@ export default function EscapeRoomDesktop() {
       {open.browser && !minimized.browser && (
         <WindowFrame
           title="Microsoft Edge"
-          icon={<Globe size={16} className="text-cyan-500" />}
+          icon={<Globe size={22} className="text-cyan-500" />}
           onClose={() => close("browser")}
           onMinimize={() => minimize("browser")}
           onMaximize={() => {}}
